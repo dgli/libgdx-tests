@@ -6,6 +6,7 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.mygdx.game.MyGdxGame;
+import com.mygdx.game.screens.mountainclimber.MCMenuScreen;
 
 /**
  * Created by dgli on 01/01/15.
@@ -24,6 +25,10 @@ public class DanielSandboxScreen implements Screen, InputProcessor{
     @Override
     public void show() {
         Gdx.input.setInputProcessor(this);
+
+        // for now just go straight to mountain climber
+        game.setScreen(new MCMenuScreen(game));
+        dispose();
     }
 
     @Override
