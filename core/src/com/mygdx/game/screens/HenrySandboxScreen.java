@@ -100,6 +100,7 @@ public class HenrySandboxScreen implements Screen, InputProcessor {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        // camera and sprite translations
         if(leftHold) {
             snoopX--;
             camera.translate(-1, 0);
@@ -117,20 +118,22 @@ public class HenrySandboxScreen implements Screen, InputProcessor {
             camera.translate(0, -1);
         }
 
+        // update the camera
         camera.update();
         tiledMapRenderer.setView(camera);
-        //tiledMapRenderer.render();
 
+        // batch drawing
         game.batch.begin();
 
-        tiledMapRenderer.renderTileLayer(background);
+        tiledMapRenderer.renderTileLayer(background);   // render the background
 
+        // draw the animated sprite
         elapsedTime += Gdx.graphics.getDeltaTime();
         game.batch.draw(animation.getKeyFrame(elapsedTime, true), snoopX, snoopY);
 
-        tiledMapRenderer.renderTileLayer(foreground);
+        tiledMapRenderer.renderTileLayer(foreground);   // render the foreground (2nd layer)
 
-        game.font.draw(game.batch, "Welcome to Henry's weedbox!!!! ", 15, 15);
+        game.font.draw(game.batch, "Welcome to Henry's weedbox!!!! ", 15, 15);  // draw the text
         game.batch.end();
     }
 
@@ -169,6 +172,9 @@ public class HenrySandboxScreen implements Screen, InputProcessor {
             upHold = true;
         if(keycode == Input.Keys.DOWN)
             downHold = true;
+        if(keycode == Input.Keys.BACK){
+            game.setScreen(new MainMenuScreen(game));
+        }
 
         return false;
     }
@@ -194,11 +200,29 @@ public class HenrySandboxScreen implements Screen, InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        if(screenX < Gdx.graphics.getWidth()/2)
+            leftHold = true;
+        if(screenX > Gdx.graphics.getWidth()/2)
+            rightHold = true;
+        if(screenY > Gdx.graphics.getHeight()/2)
+            upHold = true;
+        if(screenY < Gdx.graphics.getHeight()/2)
+            downHold = true;
+
         return false;
     }
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        if(screenX < Gdx.graphics.getWidth()/2)
+            leftHold = false;
+        if(screenX > Gdx.graphics.getWidth()/2)
+            rightHold = false;
+        if(screenY > Gdx.graphics.getHeight()/2)
+            upHold = false;
+        if(screenY < Gdx.graphics.getHeight()/2)
+            downHold = false;
+
         return false;
     }
 
