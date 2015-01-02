@@ -1,7 +1,6 @@
 package com.mygdx.game.screens;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -16,7 +15,7 @@ import com.mygdx.game.MyGdxGame;
 /**
  * Created by dgli on 01/01/15.
  */
-public class MainMenuScreen implements Screen {
+public class MainMenuScreen implements Screen, InputProcessor {
     MyGdxGame game;
 
     Skin skin;
@@ -30,7 +29,12 @@ public class MainMenuScreen implements Screen {
     public void show() {
         skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
         stage = new Stage(new ScreenViewport());
-        Gdx.input.setInputProcessor(stage);
+
+        InputMultiplexer inputMux = new InputMultiplexer();
+        inputMux.addProcessor(this);
+        inputMux.addProcessor(stage);
+
+        Gdx.input.setInputProcessor(inputMux);
 
         Button goToHenrysTestsButton = new TextButton("Henry's Sandbox", skin);
         Button goToDanielsTestsButton = new TextButton("Daniel's Sandbox", skin);
@@ -112,5 +116,49 @@ public class MainMenuScreen implements Screen {
     @Override
     public void dispose() {
 
+    }
+
+    @Override
+    public boolean keyDown(int keycode) {
+        if(keycode == Input.Keys.BACK){
+            Gdx.app.exit();
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean keyUp(int keycode) {
+        return false;
+    }
+
+    @Override
+    public boolean keyTyped(char character) {
+        return false;
+    }
+
+    @Override
+    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        return false;
+    }
+
+    @Override
+    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        return false;
+    }
+
+    @Override
+    public boolean touchDragged(int screenX, int screenY, int pointer) {
+        return false;
+    }
+
+    @Override
+    public boolean mouseMoved(int screenX, int screenY) {
+        return false;
+    }
+
+    @Override
+    public boolean scrolled(int amount) {
+        return false;
     }
 }
