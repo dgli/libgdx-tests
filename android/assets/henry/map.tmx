@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="32" height="32" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" name="image.axd" tilewidth="32" tileheight="32">
+  <image source="image.axd.png" width="512" height="512"/>
+ </tileset>
+ <layer name="Tile Layer 1" width="32" height="32">
+  <data encoding="base64" compression="zlib">
+   eJy9l+ExBEEQhTcARIAIEAEiwG4AmE0DESACLpGTwclKq7our757PeuH8uPV1e3OvDf9pqendxqGoQnGLabALFgHPrbPJ4xTNMzjOHJzzlhgE/jEM66lArVVM9eSsbcCqU+fenNUX7XVn/yvPLPhSn1dvxtPTbef6veEZ5P86tzU59qZA/RlNJxuv6lP3zR+zmdsykce6rfB+1Hp00P624ZdbcfXwMM19PJf46DH+sytkfrMu3nYza/q/Ln8YjzVWV3S5zpS/yHwGHgKnAcuApcmLvVRzx31XO6RR/WfAy+B18BV4DpwIxoNfMxPl/+sR26PUv8t8B5YBW4Dd4F7410vz1R/PfzU9sT6H7GR2BKbP0LG1RtDP9Q7eqn/3fnT/JlEX7lZg3r6lfZSjiVSn/ycX+lT262V69U1Mn6eKR27pN2rGfQr36l+795nzaCnOc/VLtY25WPP5Dxw9b/nKT3IcXuB/cCB0VcO+u32QHmru4TeHwaOAsfCo/q9e97lp7uve/t+EjgNnBXxMw4Xe68vcR6oR67OMn6n0ztTrkZUvR/9U32NRfNkBueSto53NUrnjtBPDs0T1qyeZupW/ZTOSz327N9jNE+qnsXFy7Po7ln2va7+Ow56/pvvGj0b7r3uv/v+YT10fquX7AepRcwmft6R1F3qDZ0Oz4aC8bs7ei74nZ7TcNyJav8r/90eKJbeq4faMzIGxRefk5Ih
+  </data>
+ </layer>
+ <layer name="Tile Layer 2" width="32" height="32">
+  <data encoding="base64" compression="zlib">
+   eJzt07lOAkEAh3EQtAePHkV7D+w1kV4T7TXRN9A3wDfweAGuShuh1EZIRNQGvO0U0Hg0gkIUvk0ocGOymzUzg7r/5EcxDPttg8Px+3aAjML+BS4V9u/xYHDnDOeC+lXUDO4UURLUN7M3vCvs2/u/e8aL7mwZK5L6de3D+fUshFUJ7X2kkJbQ+m455HGqqH+LOxRazmIS+68oo6I7z1p4Vvznr9NWO8Ia1rGhoH+DMCKImvyN9jfugAtudKILmxbfYQcJJE3e98CLbvSgF30W21bmQz8G4McghiT2hzGCUYwhgHGJ/QlMYgvbmEKw+d214PYhpjGDXexhFnN4wqPg/hXmsYBjnGARS/jEh+C+PXt/fQ27ETdT
+  </data>
+ </layer>
+</map>
