@@ -1,4 +1,4 @@
-package com.mygdx.game.screens;
+package com.mygdx.game.screens.mountainclimber;
 
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.GL20;
@@ -11,17 +11,20 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.mygdx.game.MyGdxGame;
+import com.mygdx.game.screens.DanielSandboxScreen;
+import com.mygdx.game.screens.HenrySandboxScreen;
+import com.mygdx.game.screens.MainMenuScreen;
 
 /**
- * Created by dgli on 01/01/15.
+ * Created by dgli on 02/01/15.
  */
-public class MainMenuScreen implements Screen, InputProcessor {
+public class MCMenuScreen implements Screen, InputProcessor{
     MyGdxGame game;
 
     Skin skin;
     Stage stage;
 
-    public MainMenuScreen(MyGdxGame backInst){
+    public MCMenuScreen(MyGdxGame backInst){
         game = backInst;
     }
 
@@ -36,44 +39,23 @@ public class MainMenuScreen implements Screen, InputProcessor {
 
         Gdx.input.setInputProcessor(inputMux);
 
-        Button goToHenrysTestsButton = new TextButton("Henry's Sandbox", skin);
-        Button goToDanielsTestsButton = new TextButton("Daniel's Sandbox", skin);
-        Button exitButton = new TextButton("Exit Game", skin);
+        Button startClimberGameButton = new TextButton("Mountain Climber", skin);
 
-        goToHenrysTestsButton.pad(20);
-        goToDanielsTestsButton.pad(20);
-        exitButton.pad(20);
+        startClimberGameButton.pad(20);
 
         // my own table
         Table table = new Table();
 
         table.row();
-        table.add(goToHenrysTestsButton).pad(25);
-        table.row();
-        table.add(goToDanielsTestsButton).pad(25);
-        table.row();
-        table.add(exitButton).pad(25);
+        table.add(startClimberGameButton).pad(25);
 
         table.setFillParent(true);
         stage.addActor(table);
 
-        goToHenrysTestsButton.addListener(new ChangeListener() {
+        startClimberGameButton.addListener(new ChangeListener() {
             public void changed(ChangeEvent event, Actor actor) {
                 game.setScreen(new HenrySandboxScreen(game));
                 dispose();
-            }
-        });
-
-        goToDanielsTestsButton.addListener(new ChangeListener() {
-            public void changed (ChangeEvent event, Actor actor) {
-                game.setScreen(new DanielSandboxScreen(game));
-                dispose();
-            }
-        });
-
-        exitButton.addListener(new ChangeListener() {
-            public void changed (ChangeEvent event, Actor actor) {
-                Gdx.app.exit();
             }
         });
 
@@ -121,7 +103,7 @@ public class MainMenuScreen implements Screen, InputProcessor {
     @Override
     public boolean keyDown(int keycode) {
         if(keycode == Input.Keys.BACK){
-            Gdx.app.exit();
+            game.setScreen(new MainMenuScreen(game));
             return true;
         }
         return false;
