@@ -17,13 +17,13 @@ import com.mygdx.game.MyGdxGame;
  * Created by dgli on 01/01/15.
  */
 public class MainMenuScreen implements Screen {
-    MyGdxGame backInstance;
+    MyGdxGame game;
 
     Skin skin;
     Stage stage;
 
     public MainMenuScreen(MyGdxGame backInst){
-        backInstance = backInst;
+        game = backInst;
     }
 
     @Override
@@ -32,20 +32,44 @@ public class MainMenuScreen implements Screen {
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
 
-        Button buttonMulti = new TextButton("Henry's\nSandbox", skin, "toggle");
+        Button goToHenrysTestsButton = new TextButton("Henry's Sandbox", skin);
+        Button goToDanielsTestsButton = new TextButton("Daniel's Sandbox", skin);
+        Button exitButton = new TextButton("Exit Game", skin);
+
+        goToHenrysTestsButton.pad(20);
+        goToDanielsTestsButton.pad(20);
+        exitButton.pad(20);
 
         // my own table
         Table table = new Table();
 
         table.row();
-        table.add(buttonMulti).pad(10);
+        table.add(goToHenrysTestsButton).pad(25);
+        table.row();
+        table.add(goToDanielsTestsButton).pad(25);
+        table.row();
+        table.add(exitButton).pad(25);
 
         table.setFillParent(true);
         stage.addActor(table);
 
-        buttonMulti.addListener(new ChangeListener() {
+        goToHenrysTestsButton.addListener(new ChangeListener() {
+            public void changed(ChangeEvent event, Actor actor) {
+                game.setScreen(new HenrySandboxScreen(game));
+                dispose();
+            }
+        });
+
+        goToDanielsTestsButton.addListener(new ChangeListener() {
             public void changed (ChangeEvent event, Actor actor) {
-                backInstance.setScreen(new HenrySandboxScreen(backInstance));
+                game.setScreen(new DanielSandboxScreen(game));
+                dispose();
+            }
+        });
+
+        exitButton.addListener(new ChangeListener() {
+            public void changed (ChangeEvent event, Actor actor) {
+                Gdx.app.exit();
             }
         });
 
