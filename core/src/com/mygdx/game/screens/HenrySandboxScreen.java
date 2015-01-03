@@ -150,7 +150,7 @@ public class HenrySandboxScreen implements Screen, InputProcessor {
         bootyAnim = new Animation(1/10f, bootyAtlas.getRegions());
 
         // input events
-        Gdx.input.setInputProcessor(this);
+        game.requestInputFocus(this);
 
         System.out.println("SNOOP DIMENSIONS: " + snoopWidth + ", " + snoopHeight);
         System.out.println("MAP DIMENSIONS: " + mapWidth + ", " + mapHeight);

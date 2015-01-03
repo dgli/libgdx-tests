@@ -23,18 +23,10 @@ public class MainMenuScreen implements Screen, InputProcessor {
 
     public MainMenuScreen(MyGdxGame backInst){
         game = backInst;
-    }
 
-    @Override
-    public void show() {
+
         skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
         stage = new Stage(new ScreenViewport());
-
-        InputMultiplexer inputMux = new InputMultiplexer();
-        inputMux.addProcessor(this);
-        inputMux.addProcessor(stage);
-
-        Gdx.input.setInputProcessor(inputMux);
 
         Button goToHenrysTestsButton = new TextButton("Henry's Sandbox", skin);
         Button goToDanielsTestsButton = new TextButton("Daniel's Sandbox", skin);
@@ -77,6 +69,15 @@ public class MainMenuScreen implements Screen, InputProcessor {
             }
         });
 
+    }
+
+    @Override
+    public void show() {
+        InputMultiplexer inputMux = new InputMultiplexer();
+        inputMux.addProcessor(this);
+        inputMux.addProcessor(stage);
+
+        game.requestInputFocus(inputMux);
 
     }
 
@@ -120,7 +121,7 @@ public class MainMenuScreen implements Screen, InputProcessor {
 
     @Override
     public boolean keyDown(int keycode) {
-        if(keycode == Input.Keys.BACK){
+        if(keycode == Input.Keys.BACK || keycode == Input.Keys.ESCAPE){
             Gdx.app.exit();
             return true;
         }

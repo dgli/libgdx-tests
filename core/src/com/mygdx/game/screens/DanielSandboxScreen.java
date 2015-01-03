@@ -24,7 +24,7 @@ public class DanielSandboxScreen implements Screen, InputProcessor{
 
     @Override
     public void show() {
-        Gdx.input.setInputProcessor(this);
+        game.requestInputFocus(this);
 
         // for now just go straight to mountain climber
         game.setScreen(new MCMenuScreen(game));
@@ -69,9 +69,11 @@ public class DanielSandboxScreen implements Screen, InputProcessor{
 
     @Override
     public boolean keyDown(int keycode) {
-        if(keycode == Input.Keys.BACK){
+        if(keycode == Input.Keys.BACK || keycode == Input.Keys.ESCAPE){
             game.setScreen(new MainMenuScreen(game));
+            dispose();
         }
+
         return false;
     }
 
