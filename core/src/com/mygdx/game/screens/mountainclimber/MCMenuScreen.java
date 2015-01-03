@@ -54,7 +54,7 @@ public class MCMenuScreen implements Screen, InputProcessor{
 
         startClimberGameButton.addListener(new ChangeListener() {
             public void changed(ChangeEvent event, Actor actor) {
-                game.setScreen(new HenrySandboxScreen(game));
+                game.setScreen(new MCGameScreen(game));
                 dispose();
             }
         });
@@ -104,6 +104,7 @@ public class MCMenuScreen implements Screen, InputProcessor{
     public boolean keyDown(int keycode) {
         if(keycode == Input.Keys.BACK){
             game.setScreen(new MainMenuScreen(game));
+            dispose();
             return true;
         }
         return false;

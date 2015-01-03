@@ -19,20 +19,25 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.mygdx.game.screens.HenrySandboxScreen;
 import com.mygdx.game.screens.MainMenuScreen;
+import com.mygdx.game.utils.GlobalConsole;
 
 public class MyGdxGame extends Game implements ApplicationListener {
 
-//	Skin skin;
-//	Stage stage;
-//	Texture texture1;
-//	Texture texture2;
-//	Label fpsLabel;
-
 	public SpriteBatch batch;
 	public BitmapFont font;
+	public Screen currentActiveScreen;
+
+	public InputMultiplexer inputMux;
+	public GlobalConsole cc;
 
 	@Override
 	public void create () {
+		// make global console
+//		cc = new GlobalConsole(this);
+//		inputMux = new InputMultiplexer();
+//		inputMux.addProcessor(cc);
+
+		//Gdx.input.setInputProcessor(inputMux);
 
 		batch = new SpriteBatch();
 		//Use LibGDX's default Arial font.
@@ -45,6 +50,9 @@ public class MyGdxGame extends Game implements ApplicationListener {
 	@Override
 	public void render () {
 		super.render();
+
+		//cc.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
+		//cc.draw();
 	}
 
 	@Override
