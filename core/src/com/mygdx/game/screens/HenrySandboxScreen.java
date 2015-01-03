@@ -216,7 +216,7 @@ public class HenrySandboxScreen implements Screen, InputProcessor {
             if (snoopXmid >= p.x && snoopXmid <= p.x + p.sprite.getRegionWidth()
                     && snoopY >= p.y && snoopY <= p.y + p.sprite.getRegionHeight()) {
                 powerupRemoval.add(p);
-                snoopSpeed += 0.05;
+                snoopSpeed += 0.1;
             }
             else
                 p.sprite.draw(game.batch);
