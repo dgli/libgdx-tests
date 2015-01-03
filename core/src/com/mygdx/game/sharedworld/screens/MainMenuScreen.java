@@ -13,6 +13,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.mygdx.game.MyGdxGame;
 import com.mygdx.game.danielworld.screens.DanielSandboxScreen;
 import com.mygdx.game.henryworld.screens.HenrySandboxScreen;
+import com.mygdx.game.henryworld.screens.weedrunner.WeedRunnerGame;
 
 /**
  * Created by dgli on 01/01/15.
@@ -53,7 +54,7 @@ public class MainMenuScreen implements Screen, InputProcessor {
 
         goToHenrysTestsButton.addListener(new ChangeListener() {
             public void changed(ChangeEvent event, Actor actor) {
-                game.setScreen(new HenrySandboxScreen(game));
+                game.setScreen(new WeedRunnerGame(game));
                 dispose();
             }
         });

@@ -1,4 +1,4 @@
-package com.mygdx.game.screens.henry.weedrunner;
+package com.mygdx.game.henryworld.screens.weedrunner;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -16,7 +16,8 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.mygdx.game.MyGdxGame;
-import com.mygdx.game.screens.MainMenuScreen;
+
+import com.mygdx.game.sharedworld.screens.MainMenuScreen;
 
 import java.util.*;
 
