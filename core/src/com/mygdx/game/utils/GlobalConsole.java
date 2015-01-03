@@ -4,9 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Window;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.mygdx.game.MyGdxGame;
 
 /**
@@ -32,7 +30,18 @@ public class GlobalConsole extends Stage {
         Window window = new Window("Debug Console", skin);
 
         window.setSize(300, 300);
-        window.getButtonTable().add(new TextButton("X", skin)).height(window.getPadTop());
+        //window.getButtonTable().add(new TextButton("X", skin)).height(window.getPadTop()-4).pad(2);
+
+        window.row();
+        TextArea messageBox = new TextArea("We'll make this into a nice debug console in the future", skin);
+        messageBox.setDisabled(true);
+        window.add(messageBox).size(290, 250).padTop(12);
+
+        window.row();
+        TextField textField = new TextField("", skin);
+        //textField.setSize(200, 200);
+        window.add(textField).width(290);
+
         window.setPosition(0, 0);
         window.defaults().spaceBottom(10);
         //window.pack();

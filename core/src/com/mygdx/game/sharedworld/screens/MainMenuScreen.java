@@ -1,4 +1,4 @@
-package com.mygdx.game.screens;
+package com.mygdx.game.sharedworld.screens;
 
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.GL20;
@@ -11,6 +11,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.mygdx.game.MyGdxGame;
+import com.mygdx.game.danielworld.screens.DanielSandboxScreen;
+import com.mygdx.game.henryworld.screens.HenrySandboxScreen;
 
 /**
  * Created by dgli on 01/01/15.

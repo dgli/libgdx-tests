@@ -1,4 +1,4 @@
-package com.mygdx.game.screens.mountainclimber;
+package com.mygdx.game.danielworld.screens.mountainclimber;
 
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.GL20;
@@ -11,9 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.mygdx.game.MyGdxGame;
-import com.mygdx.game.screens.DanielSandboxScreen;
-import com.mygdx.game.screens.HenrySandboxScreen;
-import com.mygdx.game.screens.MainMenuScreen;
+import com.mygdx.game.sharedworld.screens.MainMenuScreen;
 
 /**
  * Created by dgli on 02/01/15.

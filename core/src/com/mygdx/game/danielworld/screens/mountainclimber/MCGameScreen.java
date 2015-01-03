@@ -1,79 +1,91 @@
-package com.mygdx.game.screens;
+package com.mygdx.game.danielworld.screens.mountainclimber;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.*;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.mygdx.game.MyGdxGame;
-import com.mygdx.game.screens.mountainclimber.MCMenuScreen;
 
 /**
- * Created by dgli on 01/01/15.
+ * Created by dgli on 02/01/15.
  */
-public class DanielSandboxScreen implements Screen, InputProcessor{
+public class MCGameScreen  implements Screen, InputProcessor {
 
     MyGdxGame game;
 
+    Music music;
+    Stage stage;
 
-    public DanielSandboxScreen(final MyGdxGame backInst) {
+
+    public MCGameScreen(final MyGdxGame backInst) {
         game = backInst;
 
+        // get music
+        music = Gdx.audio.newMusic(Gdx.files.internal("music/harmony.mp3"));
+        music.setLooping(true);
+        music.play();
+
+        // input events
+        stage = new Stage(new ScreenViewport());
     }
 
 
     @Override
     public void show() {
-        game.requestInputFocus(this);
+        InputMultiplexer inputMux = new InputMultiplexer();
+        inputMux.addProcessor(this);
+        inputMux.addProcessor(stage);
 
-        // for now just go straight to mountain climber
-        game.setScreen(new MCMenuScreen(game));
-        dispose();
+        game.requestInputFocus(inputMux);
     }
 
     @Override
-    public void render(float delta) {Gdx.gl.glClearColor(0, 0, 0.2f, 1);
+    public void render(float delta) {
+        Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         game.batch.begin();
-        game.font.draw(game.batch, "Welcome to henry's sandbox!!!! ", 100, 150);
-        game.font.draw(game.batch, "Henry's sexlife now belongs to this screen. SPACE DICKS", 100, 100);
+        game.font.draw(game.batch, "Welcome to Lumbridge ", 15, 15);
         game.batch.end();
 
+        stage.act(delta);
+        stage.draw();
     }
 
     @Override
     public void resize(int width, int height) {
-
+        stage.getViewport().update(width, height, true);
     }
 
     @Override
     public void pause() {
-
+        music.pause();
     }
 
     @Override
     public void resume() {
-
+        music.play();
     }
 
     @Override
     public void hide() {
-
+        music.pause();
     }
 
     @Override
     public void dispose() {
-
+        music.dispose();
+        stage.dispose();
     }
 
     @Override
     public boolean keyDown(int keycode) {
         if(keycode == Input.Keys.BACK || keycode == Input.Keys.ESCAPE){
-            game.setScreen(new MainMenuScreen(game));
+            game.setScreen(new MCMenuScreen(game));
             dispose();
+            return true;
         }
-
         return false;
     }
 
