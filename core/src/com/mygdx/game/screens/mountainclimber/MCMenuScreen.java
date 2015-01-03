@@ -26,18 +26,10 @@ public class MCMenuScreen implements Screen, InputProcessor{
 
     public MCMenuScreen(MyGdxGame backInst){
         game = backInst;
-    }
 
-    @Override
-    public void show() {
         skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
         stage = new Stage(new ScreenViewport());
 
-        InputMultiplexer inputMux = new InputMultiplexer();
-        inputMux.addProcessor(this);
-        inputMux.addProcessor(stage);
-
-        Gdx.input.setInputProcessor(inputMux);
 
         Button startClimberGameButton = new TextButton("Mountain Climber", skin);
 
@@ -59,7 +51,16 @@ public class MCMenuScreen implements Screen, InputProcessor{
             }
         });
 
+    }
 
+    @Override
+    public void show() {
+
+        InputMultiplexer inputMux = new InputMultiplexer();
+        inputMux.addProcessor(this);
+        inputMux.addProcessor(stage);
+
+        game.requestInputFocus(inputMux);
     }
 
     @Override
@@ -97,12 +98,13 @@ public class MCMenuScreen implements Screen, InputProcessor{
 
     @Override
     public void dispose() {
-
+        skin.dispose();
+        stage.dispose();
     }
 
     @Override
     public boolean keyDown(int keycode) {
-        if(keycode == Input.Keys.BACK){
+        if(keycode == Input.Keys.BACK || keycode == Input.Keys.ESCAPE){
             game.setScreen(new MainMenuScreen(game));
             dispose();
             return true;

@@ -1,9 +1,6 @@
 package com.mygdx.game.screens.mountainclimber;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.*;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -27,7 +24,6 @@ public class MCGameScreen  implements Screen, InputProcessor {
     MyGdxGame game;
 
     Music music;
-
     Stage stage;
 
 
@@ -41,13 +37,16 @@ public class MCGameScreen  implements Screen, InputProcessor {
 
         // input events
         stage = new Stage(new ScreenViewport());
-        Gdx.input.setInputProcessor(stage);
     }
 
 
     @Override
     public void show() {
+        InputMultiplexer inputMux = new InputMultiplexer();
+        inputMux.addProcessor(this);
+        inputMux.addProcessor(stage);
 
+        game.requestInputFocus(inputMux);
     }
 
     @Override
@@ -91,8 +90,9 @@ public class MCGameScreen  implements Screen, InputProcessor {
 
     @Override
     public boolean keyDown(int keycode) {
-        if(keycode == Input.Keys.BACK){
+        if(keycode == Input.Keys.BACK || keycode == Input.Keys.ESCAPE){
             game.setScreen(new MCMenuScreen(game));
+            dispose();
             return true;
         }
         return false;
