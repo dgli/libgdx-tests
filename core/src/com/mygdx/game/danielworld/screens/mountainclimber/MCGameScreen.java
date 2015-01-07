@@ -3,9 +3,14 @@ package com.mygdx.game.danielworld.screens.mountainclimber;
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.mygdx.game.MyGdxGame;
+import com.mygdx.game.danielworld.screens.mountainclimber.objects.GrabPointObject;
+import com.mygdx.game.danielworld.screens.mountainclimber.objects.PlayerObject;
+
+import java.util.ArrayList;
 
 /**
  * Created by dgli on 02/01/15.
@@ -16,6 +21,9 @@ public class MCGameScreen  implements Screen, InputProcessor {
 
     Music music;
     Stage stage;
+
+    PlayerObject player;
+    ArrayList<GrabPointObject> grabLocations;
 
 
     public MCGameScreen(final MyGdxGame backInst) {
@@ -28,6 +36,12 @@ public class MCGameScreen  implements Screen, InputProcessor {
 
         // input events
         stage = new Stage(new ScreenViewport());
+
+        // make game objects
+        player = new PlayerObject();
+        grabLocations = new ArrayList<GrabPointObject>();
+
+        grabLocations.add(new GrabPointObject(new Vector2(100, 100), new Vector2(100, 20)));
     }
 
 
@@ -45,10 +59,19 @@ public class MCGameScreen  implements Screen, InputProcessor {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        // draw the player
+        player.render(game.batch);
+
+        for(GrabPointObject g : grabLocations){
+            g.render(game.batch);
+        }
+
+        // draw game debugging information
         game.batch.begin();
         game.font.draw(game.batch, "Welcome to Lumbridge ", 15, 15);
         game.batch.end();
 
+        // draw GUI stage
         stage.act(delta);
         stage.draw();
     }
