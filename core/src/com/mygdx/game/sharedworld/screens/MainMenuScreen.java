@@ -12,8 +12,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.mygdx.game.MyGdxGame;
 import com.mygdx.game.danielworld.screens.DanielSandboxScreen;
-import com.mygdx.game.henryworld.screens.HenrySandboxScreen;
 import com.mygdx.game.henryworld.screens.weedrunner.WeedRunnerGame;
+import com.mygdx.game.sharedworld.screens.glasssimulator.GlassSimulatorPrototypeScreen;
 
 /**
  * Created by dgli on 01/01/15.
@@ -33,6 +33,7 @@ public class MainMenuScreen implements Screen, InputProcessor {
 
         Button goToHenrysTestsButton = new TextButton("Henry's Sandbox", skin);
         Button goToDanielsTestsButton = new TextButton("Daniel's Sandbox", skin);
+        Button goToGlassSimulatorButton = new TextButton("Glass Simulator 9000 3DS/WiiU", skin);
         Button exitButton = new TextButton("Exit Game", skin);
 
         goToHenrysTestsButton.pad(20);
@@ -46,6 +47,8 @@ public class MainMenuScreen implements Screen, InputProcessor {
         table.add(goToHenrysTestsButton).pad(25);
         table.row();
         table.add(goToDanielsTestsButton).pad(25);
+        table.row();
+        table.add(goToGlassSimulatorButton).pad(25);
         table.row();
         table.add(exitButton).pad(25);
 
@@ -62,6 +65,14 @@ public class MainMenuScreen implements Screen, InputProcessor {
         goToDanielsTestsButton.addListener(new ChangeListener() {
             public void changed (ChangeEvent event, Actor actor) {
                 game.setScreen(new DanielSandboxScreen(game));
+                dispose();
+            }
+        });
+
+
+        goToGlassSimulatorButton.addListener(new ChangeListener() {
+            public void changed (ChangeEvent event, Actor actor) {
+                game.setScreen(new GlassSimulatorPrototypeScreen(game));
                 dispose();
             }
         });
