@@ -28,11 +28,11 @@ public class GrabPointObject  extends AbstractGameObject {
 
             renderer.setProjectionMatrix(batch.getProjectionMatrix());
             renderer.setTransformMatrix(batch.getTransformMatrix());
-            renderer.translate(position.x, position.y, 0);
+            renderer.translate(0, 0, 0);
 
             renderer.begin(ShapeRenderer.ShapeType.Filled);
             renderer.setColor(Color.GREEN);
-            renderer.rect(0, 0, dimension.x, dimension.y);
+            renderer.rect(position.x, position.y, dimension.x, dimension.y);
             renderer.end();
 
         }

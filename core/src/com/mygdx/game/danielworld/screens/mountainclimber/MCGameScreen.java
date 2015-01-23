@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.mygdx.game.MyGdxGame;
 import com.mygdx.game.danielworld.screens.mountainclimber.objects.GrabPointObject;
+import com.mygdx.game.danielworld.screens.mountainclimber.objects.HookObject;
 import com.mygdx.game.danielworld.screens.mountainclimber.objects.PlayerObject;
 
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ public class MCGameScreen  implements Screen, InputProcessor {
     Stage stage;
 
     PlayerObject player;
+    HookObject hook;
     ArrayList<GrabPointObject> grabLocations;
 
 
@@ -45,6 +47,14 @@ public class MCGameScreen  implements Screen, InputProcessor {
     }
 
 
+    public void fireHookAt(float x, float y){
+        Vector2 v = new Vector2(x - player.position.x, y - player.position.y);
+        v.nor();
+        hook = new HookObject(player.position, v, 1);
+
+    }
+
+
     @Override
     public void show() {
         InputMultiplexer inputMux = new InputMultiplexer();
@@ -54,8 +64,20 @@ public class MCGameScreen  implements Screen, InputProcessor {
         game.requestInputFocus(inputMux);
     }
 
+
+    public void update(float delta){
+        if(hook != null) {
+            hook.update(delta);
+        }
+    }
+
     @Override
     public void render(float delta) {
+
+        // update section
+        update(delta);
+
+        // render section
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -64,6 +86,10 @@ public class MCGameScreen  implements Screen, InputProcessor {
 
         for(GrabPointObject g : grabLocations){
             g.render(game.batch);
+        }
+
+        if(hook != null){
+            hook.render(game.batch);
         }
 
         // draw game debugging information
@@ -124,6 +150,7 @@ public class MCGameScreen  implements Screen, InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        fireHookAt(screenX, screenY);
         return false;
     }
 

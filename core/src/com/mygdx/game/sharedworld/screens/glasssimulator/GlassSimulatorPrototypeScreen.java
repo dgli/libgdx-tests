@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
@@ -29,20 +30,20 @@ public class GlassSimulatorPrototypeScreen implements Screen, InputProcessor {
 
     MyGdxGame game;
 
+    private OrthographicCamera camera;
+    private SpriteBatch batch;
+
     Music music;
-    OrthographicCamera camera;
+
+    float counter = 0;
 
     public GlassSimulatorPrototypeScreen(final MyGdxGame backInst) {
         game = backInst;
 
-        // get some dimensions
-        float w = Gdx.graphics.getWidth();
-        float h = Gdx.graphics.getHeight();
-        // set camera
+        // camera
         camera = new OrthographicCamera();
-        camera.setToOrtho(false,w,h);
-        camera.position.set(0, 0, 0);
-        camera.update();
+        camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        batch = game.batch;
 
         // get music
         music = Gdx.audio.newMusic(Gdx.files.internal("henry/weedrunner/Athlweedic.mp3"));
@@ -61,23 +62,53 @@ public class GlassSimulatorPrototypeScreen implements Screen, InputProcessor {
 
     }
 
+
     @Override
-    public void render(float delta) {
-        Gdx.gl.glClearColor(0, 0, 0, 1);
+    public void render(float deltaTime) {
+        // clear the screen with a dark blue color. The
+        // arguments to glClearColor are the red, green
+        // blue and alpha component in the range [0,1]
+        // of the color to be used to clear the screen.Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
+
+        Gdx.gl.glClearColor(0f, 0f, 0f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        // update the camera
+        // enable additive blending
+        Gdx.gl.glEnable(GL20.GL_BLEND);
+        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+
+        // tell the camera to update its matrices.
         camera.update();
-        // batch drawing
-        game.batch.begin();
 
-        // print text
-        String text3 = "GLASS SIMUOATOR LOL";
-        game.font.setColor(Color.WHITE);
-        game.font.draw(game.batch, text3, 0, 0);  // draw the text
+        // tell the SpriteBatch to render in the
+        // coordinate system specified by the camera.
+        batch.setProjectionMatrix(camera.combined);
+
+        // begin a new batch and draw the bucket and
+        // all drops
+
+        ShapeRenderer sr = new ShapeRenderer();
+        sr.setColor(1f, 1f, 0, 0.5f);
+        sr.setProjectionMatrix(camera.combined);
+
+        sr.begin(ShapeRenderer.ShapeType.Filled);
+        sr.rectLine(100, 100, 200, 200, 5);
+        sr.rectLine(100, 200, 200, 100, 5);
+        sr.end();
+
+        Gdx.gl.glDisable(GL20.GL_BLEND);
+
+        batch.begin();
+
+        // draw some game fonts
+        game.font.draw(batch, "Hello!" + counter, 50, 50);
+
+        batch.end();
+
+        if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) counter += deltaTime;
+        if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) counter -= deltaTime;
 
 
-        game.batch.end();
     }
 
     @Override

@@ -1,8 +1,6 @@
 package com.mygdx.game.danielworld.screens.mountainclimber.objects;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
@@ -10,16 +8,17 @@ import com.badlogic.gdx.math.Vector2;
 /**
  * Created by dgli on 15-01-07.
  */
-public class PlayerObject extends AbstractGameObject {
+public class HookObject extends AbstractInteractiveGameObject{
     private ShapeRenderer renderer = new ShapeRenderer();
 
 
-    public PlayerObject(){
-        position = new Vector2(300, 300);
-        dimension = new Vector2(50, 50);
+    public HookObject(Vector2 position, Vector2 velocity, float rotation){
+        this.position = position;
+        this.dimension = new Vector2(5, 5);
+        this.velocity = velocity;
         origin = new Vector2(0, 0);
         scale = new Vector2(1, 1);
-        rotation = 0;
+        this.rotation = rotation;
 
     }
 
@@ -31,7 +30,7 @@ public class PlayerObject extends AbstractGameObject {
         renderer.translate(0, 0, 0);
 
         renderer.begin(ShapeRenderer.ShapeType.Filled);
-        renderer.setColor(Color.BLUE);
+        renderer.setColor(Color.RED);
         renderer.rect(position.x, position.y, dimension.x, dimension.y);
         renderer.end();
 
