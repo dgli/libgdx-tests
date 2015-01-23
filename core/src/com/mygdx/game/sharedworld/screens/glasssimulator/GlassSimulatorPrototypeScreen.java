@@ -5,23 +5,14 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
-import com.badlogic.gdx.maps.tiled.TmxMapLoader;
-import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.mygdx.game.MyGdxGame;
 
 import com.mygdx.game.sharedworld.screens.MainMenuScreen;
-
-import java.util.*;
+import com.mygdx.game.sharedworld.screens.glasssimulator.optics.GSORay;
 
 /**
  * Created by dgli on 01/01/15.
@@ -35,7 +26,10 @@ public class GlassSimulatorPrototypeScreen implements Screen, InputProcessor {
 
     Music music;
 
-    float counter = 0;
+
+    float testCounter = 0;
+    float testSpread = 0;
+
 
     public GlassSimulatorPrototypeScreen(final MyGdxGame backInst) {
         game = backInst;
@@ -71,7 +65,8 @@ public class GlassSimulatorPrototypeScreen implements Screen, InputProcessor {
         // of the color to be used to clear the screen.Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
         Gdx.gl.glClearColor(0f, 0f, 0f, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        //Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT | (Gdx.graphics.getBufferFormat().coverageSampling ? GL20.GL_COVERAGE_BUFFER_BIT_NV : 0));
 
         // enable additive blending
         Gdx.gl.glEnable(GL20.GL_BLEND);
@@ -88,12 +83,22 @@ public class GlassSimulatorPrototypeScreen implements Screen, InputProcessor {
         // all drops
 
         ShapeRenderer sr = new ShapeRenderer();
-        sr.setColor(1f, 1f, 0, 0.5f);
+
+        sr.setColor(1f, 1f, 0, 0.1f);
         sr.setProjectionMatrix(camera.combined);
 
         sr.begin(ShapeRenderer.ShapeType.Filled);
-        sr.rectLine(100, 100, 200, 200, 5);
-        sr.rectLine(100, 200, 200, 100, 5);
+
+        //////////////////////////////////////////////////
+        //////////////////////////////////////////////////
+        ///// CHECK OUT LIBGDX MATH COLLISION RAY
+        //////////////////////////////////////////////////
+        //////////////////////////////////////////////////
+        //////////////////////////////////////////////////
+        for(float x = testCounter - testSpread; x < testCounter + testSpread; x+=0.001f) {
+            new GSORay(300, 300, x).drawRayShape(sr);
+        }
+
         sr.end();
 
         Gdx.gl.glDisable(GL20.GL_BLEND);
@@ -101,12 +106,17 @@ public class GlassSimulatorPrototypeScreen implements Screen, InputProcessor {
         batch.begin();
 
         // draw some game fonts
-        game.font.draw(batch, "Hello!" + counter, 50, 50);
+        game.font.draw(batch, "Hello!" + testCounter, 50, 50);
 
         batch.end();
 
-        if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) counter += deltaTime;
-        if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) counter -= deltaTime;
+        //angle control
+        if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) testCounter += deltaTime;
+        if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) testCounter -= deltaTime;
+
+        //spread control
+        if(Gdx.input.isKeyPressed(Input.Keys.UP)) testSpread += deltaTime;
+        if(Gdx.input.isKeyPressed(Input.Keys.DOWN)) testSpread -= deltaTime;
 
 
     }
