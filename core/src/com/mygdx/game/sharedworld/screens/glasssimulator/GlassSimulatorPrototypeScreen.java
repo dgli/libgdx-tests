@@ -9,10 +9,11 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.MyGdxGame;
 
 import com.mygdx.game.sharedworld.screens.MainMenuScreen;
-import com.mygdx.game.sharedworld.screens.glasssimulator.optics.GSORay;
+import com.mygdx.game.sharedworld.screens.glasssimulator.optics.GSOLaserPointer;
 
 /**
  * Created by dgli on 01/01/15.
@@ -96,7 +97,7 @@ public class GlassSimulatorPrototypeScreen implements Screen, InputProcessor {
         //////////////////////////////////////////////////
         //////////////////////////////////////////////////
         for(float x = testCounter - testSpread; x < testCounter + testSpread; x+=0.001f) {
-            new GSORay(300, 300, x).drawRayShape(sr);
+            new GSOLaserPointer(new Vector2(300, 300), x).drawShape(sr);
         }
 
         sr.end();
