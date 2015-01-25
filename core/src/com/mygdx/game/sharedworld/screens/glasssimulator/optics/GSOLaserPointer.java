@@ -40,7 +40,7 @@ public class GSOLaserPointer extends GSObject implements GSIRayEmitter{
             recalc();
         }
 
-        sr.setColor(1f, 0, 0, 0.1f);
+        sr.setColor(1f, 0, 0, 1f);
         sr.rectLine(position, unitDirectionEndPointCache, Constants.LaserPointer.BARREL_DIAMETER);
         sr.circle(position.x, position.y, Constants.LaserPointer.BASE_DOT_RADIUS);
     }

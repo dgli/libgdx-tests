@@ -35,8 +35,10 @@ public class GSOInterfaceSegment extends GSObject{
 
     @Override
     public void drawShape(ShapeRenderer sr) {
-        sr.setColor(Color.WHITE);
-        sr.rectLine(startPoint, endPoint, 3);
+        sr.setColor(Color.BLUE);
+        sr.rectLine(startPoint, endPoint, Constants.InterfaceSegment.WALL_THICKNESS);
+        sr.circle(startPoint.x, startPoint.y, Constants.InterfaceSegment.END_POINT_DOT_RADIUS);
+        sr.circle(endPoint.x, endPoint.y, Constants.InterfaceSegment.END_POINT_DOT_RADIUS);
     }
 
 

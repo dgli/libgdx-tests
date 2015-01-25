@@ -13,7 +13,9 @@ import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.MyGdxGame;
 
 import com.mygdx.game.sharedworld.screens.MainMenuScreen;
+import com.mygdx.game.sharedworld.screens.glasssimulator.optics.GSOInterfaceSegment;
 import com.mygdx.game.sharedworld.screens.glasssimulator.optics.GSOLaserPointer;
+import com.mygdx.game.sharedworld.screens.glasssimulator.optics.GSOpticsSimulationEnvironment;
 
 /**
  * Created by dgli on 01/01/15.
@@ -21,6 +23,8 @@ import com.mygdx.game.sharedworld.screens.glasssimulator.optics.GSOLaserPointer;
 public class GlassSimulatorPrototypeScreen implements Screen, InputProcessor {
 
     MyGdxGame game;
+
+    GSOpticsSimulationEnvironment simulationEnvironment;
 
     private OrthographicCamera camera;
     private SpriteBatch batch;
@@ -30,6 +34,8 @@ public class GlassSimulatorPrototypeScreen implements Screen, InputProcessor {
 
     float testCounter = 0;
     float testSpread = 0;
+
+    GSOLaserPointer testLaserPointer;
 
 
     public GlassSimulatorPrototypeScreen(final MyGdxGame backInst) {
@@ -41,13 +47,21 @@ public class GlassSimulatorPrototypeScreen implements Screen, InputProcessor {
         batch = game.batch;
 
         // get music
-        music = Gdx.audio.newMusic(Gdx.files.internal("henry/weedrunner/Athlweedic.mp3"));
+        music = Gdx.audio.newMusic(Gdx.files.internal("music/superslambros.mp3"));
         music.setVolume(0.5f);
         music.setLooping(true);
         music.play();
 
         // input events
         game.requestInputFocus(this);
+
+        // simulation environment
+        simulationEnvironment = new GSOpticsSimulationEnvironment();
+
+        testLaserPointer = new GSOLaserPointer(new Vector2(300, 300), 0);
+
+        simulationEnvironment.addObject(testLaserPointer);
+        simulationEnvironment.addObject(new GSOInterfaceSegment(new Vector2(100, 300), new Vector2(300, 100), 1, 1));
 
     }
 
@@ -90,15 +104,7 @@ public class GlassSimulatorPrototypeScreen implements Screen, InputProcessor {
 
         sr.begin(ShapeRenderer.ShapeType.Filled);
 
-        //////////////////////////////////////////////////
-        //////////////////////////////////////////////////
-        ///// CHECK OUT LIBGDX MATH COLLISION RAY
-        //////////////////////////////////////////////////
-        //////////////////////////////////////////////////
-        //////////////////////////////////////////////////
-        for(float x = testCounter - testSpread; x < testCounter + testSpread; x+=0.001f) {
-            new GSOLaserPointer(new Vector2(300, 300), x).drawShape(sr);
-        }
+        simulationEnvironment.drawObjectShapes(sr);
 
         sr.end();
 
@@ -114,6 +120,8 @@ public class GlassSimulatorPrototypeScreen implements Screen, InputProcessor {
         //angle control
         if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) testCounter += deltaTime;
         if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) testCounter -= deltaTime;
+
+        testLaserPointer.setDirection(testCounter);
 
         //spread control
         if(Gdx.input.isKeyPressed(Input.Keys.UP)) testSpread += deltaTime;

@@ -12,7 +12,7 @@ public final class Constants {
         public static final float BASE_DOT_RADIUS = 2f;
     }
 
-    public static class ShadeSegment{
+    public static class InterfaceSegment {
         public static final float WALL_THICKNESS = 2f;
         public static final float END_POINT_DOT_RADIUS = 2f;
     }
