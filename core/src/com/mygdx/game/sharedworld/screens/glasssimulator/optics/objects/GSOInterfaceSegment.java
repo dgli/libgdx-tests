@@ -1,9 +1,10 @@
-package com.mygdx.game.sharedworld.screens.glasssimulator.optics;
+package com.mygdx.game.sharedworld.screens.glasssimulator.optics.objects;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.sharedworld.screens.glasssimulator.config.Constants;
+import com.mygdx.game.sharedworld.screens.glasssimulator.optics.GSObject;
 
 /**
  * Created by dgli on 23/01/15.
@@ -21,7 +22,7 @@ import com.mygdx.game.sharedworld.screens.glasssimulator.config.Constants;
  *
  *
  */
-public class GSOInterfaceSegment extends GSObject{
+public class GSOInterfaceSegment extends GSObject {
     private Vector2 startPoint, endPoint;
     private float medium1RefracticeIndex, medium2RefracticeIndex;
 

@@ -1,16 +1,20 @@
-package com.mygdx.game.sharedworld.screens.glasssimulator.optics;
+package com.mygdx.game.sharedworld.screens.glasssimulator.optics.objects;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.sharedworld.screens.glasssimulator.config.Constants;
+import com.mygdx.game.sharedworld.screens.glasssimulator.optics.GSIRayEmitter;
+import com.mygdx.game.sharedworld.screens.glasssimulator.optics.GSObject;
+import com.mygdx.game.sharedworld.screens.glasssimulator.optics.GSRaySource;
+import com.mygdx.game.sharedworld.screens.glasssimulator.optics.GSRayTrajectory;
 
 import java.util.ArrayList;
 
 /**
  * Created by dgli on 23/01/15.
  */
-public class GSOLaserPointer extends GSObject implements GSIRayEmitter{
+public class GSOLaserPointer extends GSObject implements GSIRayEmitter {
 
     private Vector2 position;
     private float direction;
@@ -28,11 +32,15 @@ public class GSOLaserPointer extends GSObject implements GSIRayEmitter{
         this.position = position;
         this.direction = direction;
         parametersChanged = true;
+
+        laserEmitter = new GSRaySource(position, direction, this, Color.RED);
     }
 
     @Override
     public ArrayList<GSRaySource> getRaySources() {
-        return null;
+        ArrayList<GSRaySource> srcList = new ArrayList<GSRaySource>();
+        srcList.add(laserEmitter);
+        return srcList;
     }
 
     public void drawShape(ShapeRenderer sr){
@@ -43,12 +51,15 @@ public class GSOLaserPointer extends GSObject implements GSIRayEmitter{
         sr.setColor(1f, 0, 0, 1f);
         sr.rectLine(position, unitDirectionEndPointCache, Constants.LaserPointer.BARREL_DIAMETER);
         sr.circle(position.x, position.y, Constants.LaserPointer.BASE_DOT_RADIUS);
+
+        //System.out.println("LASER DIRECTION: " + direction);
+
     }
 
     public void recalc(){
         parametersChanged = false;
 
-        laserEmitter = new GSRaySource(position, direction, this);
+        laserEmitter = new GSRaySource(position, direction, this, Color.RED);
         unitDirectionEndPointCache = position.cpy().add(
                 new Vector2((float) Math.cos(direction) * Constants.LaserPointer.BARREL_LENGTH,
                 (float) Math.sin(direction) * Constants.LaserPointer.BARREL_LENGTH));

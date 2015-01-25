@@ -13,8 +13,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.MyGdxGame;
 
 import com.mygdx.game.sharedworld.screens.MainMenuScreen;
-import com.mygdx.game.sharedworld.screens.glasssimulator.optics.GSOInterfaceSegment;
-import com.mygdx.game.sharedworld.screens.glasssimulator.optics.GSOLaserPointer;
+import com.mygdx.game.sharedworld.screens.glasssimulator.optics.objects.GSOInterfaceSegment;
+import com.mygdx.game.sharedworld.screens.glasssimulator.optics.objects.GSOLaserPointer;
 import com.mygdx.game.sharedworld.screens.glasssimulator.optics.GSOpticsSimulationEnvironment;
 
 /**
@@ -104,6 +104,7 @@ public class GlassSimulatorPrototypeScreen implements Screen, InputProcessor {
 
         sr.begin(ShapeRenderer.ShapeType.Filled);
 
+        simulationEnvironment.updateEnvironmentRayTrajectories();
         simulationEnvironment.drawObjectShapes(sr);
 
         sr.end();
@@ -113,7 +114,7 @@ public class GlassSimulatorPrototypeScreen implements Screen, InputProcessor {
         batch.begin();
 
         // draw some game fonts
-        game.font.draw(batch, "Hello!" + testCounter, 50, 50);
+        game.font.draw(batch, "FPS: " + Gdx.graphics.getFramesPerSecond() + "  Laser Angle: " + testCounter, 50, 50);
 
         batch.end();
 
