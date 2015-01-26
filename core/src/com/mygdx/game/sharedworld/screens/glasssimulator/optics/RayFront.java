@@ -1,6 +1,7 @@
 package com.mygdx.game.sharedworld.screens.glasssimulator.optics;
 
 import com.badlogic.gdx.math.Vector2;
+import com.mygdx.game.sharedworld.screens.glasssimulator.optics.objects.GSOInterfaceSegment;
 
 /**
  * Created by dgli on 26/01/15.
@@ -12,12 +13,14 @@ public class RayFront {
     float startIntensity;
     float fadeOutDistance;
     float fadingCoefficient;
+    GSOInterfaceSegment fromSegment;
 
     public RayFront(Vector2 rayStart, Vector2 direction, float startIntensity,
-                    float fadingCoefficient) {
+                    float fadingCoefficient, GSOInterfaceSegment from) {
         this.rayStart = rayStart;
         this.direction = direction;
         this.startIntensity = startIntensity;
+        this.fromSegment = from;
 
         if(fadingCoefficient > 0.00000001f) {
             this.fadeOutDistance = 1 / fadingCoefficient;
@@ -28,6 +31,11 @@ public class RayFront {
         this.fadingCoefficient = fadingCoefficient;
     }
 
+
+
+    public GSOInterfaceSegment getFromSegment() {
+        return fromSegment;
+    }
 
     public Vector2 getRayStart() {
         return rayStart;

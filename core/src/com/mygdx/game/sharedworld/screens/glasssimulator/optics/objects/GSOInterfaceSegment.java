@@ -88,7 +88,7 @@ public class GSOInterfaceSegment extends GSObject implements GSICollidable{
     @Override
     public GSInterfaceCollisionResult getCollisionResultIfExists(RayFront source){
 
-        if(source == null){
+        if(source == null || source.getFromSegment() == this){
             return null;
         }
 
@@ -133,7 +133,18 @@ public class GSOInterfaceSegment extends GSObject implements GSICollidable{
         }
 
 
+        /////
+        //
+        //
+        //
         // calculate reflection
+        //
+        //
+        //
+        /////
+
+
+
         float crossRadius = Intersector.distanceLinePoint(intersection.x, intersection.y,
                 intersection.x + normal.x, intersection.y + normal.y,
                 source.getRayStart().x, source.getRayStart().y
@@ -141,13 +152,22 @@ public class GSOInterfaceSegment extends GSObject implements GSICollidable{
 
         Vector2 crossVector;
 
-        //if()
+
         crossVector = endPoint.cpy().sub(startPoint).nor();
 
-        if((crossVector.angleRad() - sourceDirection.angleRad() + Math.PI*2)%(Math.PI) > Math.PI/2){
-            crossVector.scl(-1);
-        }
-        if(sourceDirection.x > 0 && sourceDirection.y < 0){
+        //
+        // if the cross radius vector is on the same side of the normal as the incident ray
+        // then we know we are on the wrong side.
+        //
+        int incSide = Intersector.pointLineSide(intersection, intersection.cpy().add(normal.cpy().scl(10000)),
+                source.getRayStart());
+
+        int reflSide = Intersector.pointLineSide(intersection, intersection.cpy().add(normal.cpy().scl(10000)),
+                source.getRayStart().cpy().add(crossVector));
+
+        System.out.println("INCSIDE:" + incSide + "   REFSIDE:" + reflSide);
+
+        if(incSide == reflSide){
             crossVector.scl(-1);
         }
 
@@ -156,16 +176,21 @@ public class GSOInterfaceSegment extends GSObject implements GSICollidable{
         RayFront reflectionRayFront =
                 new RayFront(intersection.cpy(),
                         source.getRayStart().cpy().add(crossVector).sub(intersection).nor(),
-                        incidenceSegment.getEndIntensity(), source.getFadingCoefficient()
-                        );
+                        incidenceSegment.getEndIntensity(), source.getFadingCoefficient(),
+                        this);
 
         RaySegment reflectionSeg =
                 new RaySegment(intersection.cpy(), source.getRayStart().cpy().add(crossVector),
                         incidenceSegment.getEndIntensity(), source.getFadingCoefficient(),
                         this);
 
-        result.setReflectedRayFront(reflectionRayFront);
-        result.setIncidenceRaySegment(incidenceSegment);
+        RaySegment normalSeg =
+                new RaySegment(intersection, intersection.cpy().add(normal.cpy().scl(500)),
+                        incidenceSegment.getEndIntensity(), source.getFadingCoefficient(),
+                        this);
+
+        //result.setReflectedRayFront(reflectionRayFront);
+        result.setIncidenceRaySegment(reflectionSeg);
         result.setCollisionPoint(intersection.cpy());
 
 

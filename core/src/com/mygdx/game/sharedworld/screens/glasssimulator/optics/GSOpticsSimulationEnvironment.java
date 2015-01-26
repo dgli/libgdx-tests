@@ -70,10 +70,10 @@ public class GSOpticsSimulationEnvironment {
 
         GSRayTrajectory traj = new GSRayTrajectory(rSrc.baseColor);
 
-        RayFront initialRay = new RayFront(rSrc.position.cpy(), rSrc.direction.cpy(), 1, 0.003f);
+        RayFront initialRay = new RayFront(rSrc.position.cpy(), rSrc.direction.cpy(), 1, 0.001f, null);
 
         int i = 0;
-        while(++i < 3){
+        while(i++ < 2){
             GSInterfaceCollisionResult closestResult = null;
             float closestDistance = Float.MAX_VALUE;
 

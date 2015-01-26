@@ -56,7 +56,7 @@ public class GlassSimulatorPrototypeScreen implements Screen, InputProcessor {
         music = Gdx.audio.newMusic(Gdx.files.internal("music/superslambros.mp3"));
         music.setVolume(0.5f);
         music.setLooping(true);
-        //music.play();
+        music.play();
 
         // input events
         game.requestInputFocus(this);
@@ -95,6 +95,7 @@ public class GlassSimulatorPrototypeScreen implements Screen, InputProcessor {
         if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) testCounter -= deltaTime;
 
         testLaserPointer.setDirection(new Vector2((float)Math.cos(testCounter), (float)Math.sin(testCounter)));
+        testLaserPointer.setPosition(mouseVec);
 
         //spread control
         if(Gdx.input.isKeyPressed(Input.Keys.UP)) testSpread += deltaTime;
