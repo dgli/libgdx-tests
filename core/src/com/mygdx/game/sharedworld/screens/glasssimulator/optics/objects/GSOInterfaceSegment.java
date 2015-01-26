@@ -3,15 +3,11 @@ package com.mygdx.game.sharedworld.screens.glasssimulator.optics.objects;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Intersector;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.sharedworld.screens.glasssimulator.config.Constants;
 import com.mygdx.game.sharedworld.screens.glasssimulator.optics.*;
 
-import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
-
-import com.mygdx.game.sharedworld.screens.glasssimulator.optics.GSRayTrajectory;
 
 /**
  * Created by dgli on 23/01/15.
@@ -24,15 +20,23 @@ import com.mygdx.game.sharedworld.screens.glasssimulator.optics.GSRayTrajectory;
  * e.g.
  *
  *            medium 2
- *     (p1)-------------->>(p2)
+ *
+ *
+ *
+ *     (p1)-------|------>>(p2)
+ *                V
+ *
  *            medium 1
  *
  *
  */
 public class GSOInterfaceSegment extends GSObject implements GSICollidable{
     private Vector2 startPoint, endPoint;
+    private Vector2 normal;
     private float medium1RefracticeIndex, medium2RefracticeIndex;
+    private float interfaceAbsorbance;
     private boolean previousIntersectionSuccess;
+    public boolean markCollision;
 
     public GSOInterfaceSegment(Vector2 start, Vector2 end, float medium1index, float medium2index){
         startPoint = start;
@@ -40,20 +44,37 @@ public class GSOInterfaceSegment extends GSObject implements GSICollidable{
         medium1RefracticeIndex = medium1index;
         medium2RefracticeIndex = medium2index;
         previousIntersectionSuccess = false;
+
+        normal = new Vector2();
+        updateNormal();
     }
 
 
     @Override
     public void drawShape(ShapeRenderer sr) {
-        if(previousIntersectionSuccess) {
+        if(markCollision){
             sr.setColor(Color.LIGHT_GRAY);
-        }else {
+        }
+        else if(previousIntersectionSuccess) {
+            sr.setColor(Color.DARK_GRAY);
+        }
+        else {
             sr.setColor(Color.BLUE);
         }
 
-            sr.rectLine(startPoint, endPoint, Constants.InterfaceSegment.WALL_THICKNESS);
-        sr.circle(startPoint.x, startPoint.y, Constants.InterfaceSegment.END_POINT_DOT_RADIUS);
+        sr.rectLine(startPoint, endPoint, Constants.InterfaceSegment.WALL_THICKNESS);
         sr.circle(endPoint.x, endPoint.y, Constants.InterfaceSegment.END_POINT_DOT_RADIUS);
+        // mark start point as yellow
+        sr.setColor(Color.YELLOW);
+        sr.circle(startPoint.x, startPoint.y, Constants.InterfaceSegment.END_POINT_DOT_RADIUS);
+
+
+        Vector2 mid = startPoint.cpy().add(endPoint).scl(0.5f);
+
+        float direction = endPoint.cpy().sub(startPoint).angleRad() - (float)Math.PI/2f;
+
+        sr.circle(mid.x, mid.y, 2);
+        sr.line(mid.x, mid.y, mid.x + 10 * normal.x, mid.y + 10 * normal.y);
     }
 
 
@@ -67,7 +88,12 @@ public class GSOInterfaceSegment extends GSObject implements GSICollidable{
     @Override
     public GSInterfaceCollisionResult getCollisionResultIfExists(RayFront source){
 
+        if(source == null){
+            return null;
+        }
+
         previousIntersectionSuccess = false;
+        markCollision = false;
 
         Vector2 sourceDirection = source.getDirection().cpy();
 
@@ -93,16 +119,57 @@ public class GSOInterfaceSegment extends GSObject implements GSICollidable{
             return null;
         }
 
-        GSInterfaceCollisionResult result = new GSInterfaceCollisionResult();
-        result.setIncidenceRaySegment(
+        GSInterfaceCollisionResult result = new GSInterfaceCollisionResult(this);
+
+        RaySegment incidenceSegment =
                 new RaySegment(source.getRayStart().cpy(), intersection,
-                        source.getStartIntensity(), source.getFadingCoefficient())
-        );
+                        source.getStartIntensity(), source.getFadingCoefficient(),
+                        this);
+
 
         if(source.getFadeOutDistance() > 0 &&
-                result.getIncidenceRaySegment().getLength() > source.getFadeOutDistance()){
+                incidenceSegment.getLength() > source.getFadeOutDistance()){
             return null;
         }
+
+
+        // calculate reflection
+        float crossRadius = Intersector.distanceLinePoint(intersection.x, intersection.y,
+                intersection.x + normal.x, intersection.y + normal.y,
+                source.getRayStart().x, source.getRayStart().y
+                );
+
+        Vector2 crossVector;
+
+        //if()
+        crossVector = endPoint.cpy().sub(startPoint).nor();
+
+        if((crossVector.angleRad() - sourceDirection.angleRad() + Math.PI*2)%(Math.PI) > Math.PI/2){
+            crossVector.scl(-1);
+        }
+        if(sourceDirection.x > 0 && sourceDirection.y < 0){
+            crossVector.scl(-1);
+        }
+
+        crossVector.scl(crossRadius * 2);
+
+        RayFront reflectionRayFront =
+                new RayFront(intersection.cpy(),
+                        source.getRayStart().cpy().add(crossVector).sub(intersection).nor(),
+                        incidenceSegment.getEndIntensity(), source.getFadingCoefficient()
+                        );
+
+        RaySegment reflectionSeg =
+                new RaySegment(intersection.cpy(), source.getRayStart().cpy().add(crossVector),
+                        incidenceSegment.getEndIntensity(), source.getFadingCoefficient(),
+                        this);
+
+        result.setReflectedRayFront(reflectionRayFront);
+        result.setIncidenceRaySegment(incidenceSegment);
+        result.setCollisionPoint(intersection.cpy());
+
+
+
 
 
         previousIntersectionSuccess = true;
@@ -110,11 +177,27 @@ public class GSOInterfaceSegment extends GSObject implements GSICollidable{
     }
 
 
+    private void updateNormal(){
+        float direction = endPoint.cpy().sub(startPoint).angleRad() - (float)Math.PI/2f;
+        normal.x = (float)Math.cos(direction);
+        normal.y = (float)Math.sin(direction);
+    }
+
+
+    public float getInterfaceAbsorbance() {
+        return interfaceAbsorbance;
+    }
+
+    public void setInterfaceAbsorbance(float interfaceAbsorbance) {
+        this.interfaceAbsorbance = interfaceAbsorbance;
+    }
+
     public Vector2 getStartPoint() {
         return startPoint;
     }
 
     public void setStartPoint(Vector2 startPoint) {
+        updateNormal();
         this.startPoint = startPoint;
     }
 
@@ -123,6 +206,7 @@ public class GSOInterfaceSegment extends GSObject implements GSICollidable{
     }
 
     public void setEndPoint(Vector2 endPoint) {
+        updateNormal();
         this.endPoint = endPoint;
     }
 
@@ -140,5 +224,9 @@ public class GSOInterfaceSegment extends GSObject implements GSICollidable{
 
     public void setMedium2RefracticeIndex(float medium2RefracticeIndex) {
         this.medium2RefracticeIndex = medium2RefracticeIndex;
+    }
+
+    public Vector2 getNormal() {
+        return normal;
     }
 }

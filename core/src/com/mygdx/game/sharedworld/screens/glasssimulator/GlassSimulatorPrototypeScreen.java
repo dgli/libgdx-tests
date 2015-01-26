@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.*;
@@ -69,6 +70,8 @@ public class GlassSimulatorPrototypeScreen implements Screen, InputProcessor {
         simulationEnvironment.addObject(new GSOInterfaceSegment(new Vector2(100, 500), new Vector2(0, 100), 1, 1));
         simulationEnvironment.addObject(new GSOInterfaceSegment(new Vector2(100, 300), new Vector2(300, 0), 1, 1));
         simulationEnvironment.addObject(new GSOInterfaceSegment(new Vector2(50, 200), new Vector2(200, 100), 1, 1));
+        simulationEnvironment.addObject(new GSOInterfaceSegment(new Vector2(600, 300), new Vector2(400, 0), 1, 1));
+        simulationEnvironment.addObject(new GSOInterfaceSegment(new Vector2(600, 100), new Vector2(400, 500), 1, 1));
 
     }
 
@@ -134,15 +137,16 @@ public class GlassSimulatorPrototypeScreen implements Screen, InputProcessor {
         simulationEnvironment.drawObjectShapes(sr);
 
         // draw some ray testers
-        Vector2 start = new Vector2(300, 300);
-        Vector2 end = mouseVec;
-        Vector2 mid = start.cpy().add(end).scl(0.5f);
-
-        float direction = end.cpy().sub(start).angleRad() - (float)Math.PI/2f;
-
-        //sr.line(start, end);
-        //sr.circle(mid.x, mid.y, 2);
-        //sr.line(mid.x, mid.y, mid.x + 50 * (float)Math.cos(direction), mid.y + 50 * (float)Math.sin(direction));
+//        Vector2 start = new Vector2(300, 300);
+//        Vector2 end = mouseVec;
+//        Vector2 mid = start.cpy().add(end).scl(0.5f);
+//
+//        float direction = end.cpy().sub(start).angleRad() - (float)Math.PI/2f;
+//
+//        sr.setColor(Color.YELLOW);
+//        sr.line(start, end);
+//        sr.circle(mid.x, mid.y, 2);
+//        sr.line(mid.x, mid.y, mid.x + 50 * (float)Math.cos(direction), mid.y + 50 * (float)Math.sin(direction));
 
 
         sr.end();

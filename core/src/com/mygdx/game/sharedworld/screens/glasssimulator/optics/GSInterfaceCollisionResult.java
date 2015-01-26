@@ -1,6 +1,7 @@
 package com.mygdx.game.sharedworld.screens.glasssimulator.optics;
 
 import com.badlogic.gdx.math.Vector2;
+import com.mygdx.game.sharedworld.screens.glasssimulator.optics.objects.GSOInterfaceSegment;
 
 /**
  * Created by dgli on 25/01/15.
@@ -8,8 +9,13 @@ import com.badlogic.gdx.math.Vector2;
 public class GSInterfaceCollisionResult {
     Vector2 collisionPoint;
     RaySegment incidenceRaySegment;
-    RaySegment reflectedRaySegment;
-    RaySegment refractedRaySegment;
+    RayFront reflectedRayFront;
+    RayFront refractedRayFront;
+    GSOInterfaceSegment collidedInterface;
+
+    public GSInterfaceCollisionResult(GSOInterfaceSegment collidedInterface){
+        this.collidedInterface = collidedInterface;
+    }
 
 
     public Vector2 getCollisionPoint() {
@@ -28,20 +34,24 @@ public class GSInterfaceCollisionResult {
         this.incidenceRaySegment = incidenceRaySegment;
     }
 
-    public RaySegment getReflectedRaySegment() {
-        return reflectedRaySegment;
+    public RayFront getReflectedRayFront() {
+        return reflectedRayFront;
     }
 
-    public void setReflectedRaySegment(RaySegment reflectedRaySegment) {
-        this.reflectedRaySegment = reflectedRaySegment;
+    public void setReflectedRayFront(RayFront reflectedRayFront) {
+        this.reflectedRayFront = reflectedRayFront;
     }
 
-    public RaySegment getRefractedRaySegment() {
-        return refractedRaySegment;
+    public RayFront getRefractedRayFront() {
+        return refractedRayFront;
     }
 
-    public void setRefractedRaySegment(RaySegment refractedRaySegment) {
-        this.refractedRaySegment = refractedRaySegment;
+    public void setRefractedRayFront(RayFront refractedRayFront) {
+        this.refractedRayFront = refractedRayFront;
+    }
+
+    public GSOInterfaceSegment getCollidedInterface() {
+        return collidedInterface;
     }
 
 }

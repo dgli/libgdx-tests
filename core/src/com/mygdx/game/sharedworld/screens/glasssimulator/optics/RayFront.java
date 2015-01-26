@@ -13,10 +13,12 @@ public class RayFront {
     float fadeOutDistance;
     float fadingCoefficient;
 
-    public RayFront(Vector2 rayStart, Vector2 direction, float startIntensity, float fadingCoefficient) {
+    public RayFront(Vector2 rayStart, Vector2 direction, float startIntensity,
+                    float fadingCoefficient) {
         this.rayStart = rayStart;
         this.direction = direction;
         this.startIntensity = startIntensity;
+
         if(fadingCoefficient > 0.00000001f) {
             this.fadeOutDistance = 1 / fadingCoefficient;
         }else{

@@ -66,45 +66,58 @@ public class GSOpticsSimulationEnvironment {
 
     }
 
-    public GSRayTrajectory projectRay(GSRaySource rSrc){
+    public GSRayTrajectory projectRay(GSRaySource rSrc) {
 
         GSRayTrajectory traj = new GSRayTrajectory(rSrc.baseColor);
 
-        RayFront initialRay = new RayFront(rSrc.position.cpy(), rSrc.direction.cpy(), 1, 0.004f);
+        RayFront initialRay = new RayFront(rSrc.position.cpy(), rSrc.direction.cpy(), 1, 0.003f);
 
-        GSInterfaceCollisionResult closestResult = null;
-        float closestDistance = Float.MAX_VALUE;
+        int i = 0;
+        while(++i < 3){
+            GSInterfaceCollisionResult closestResult = null;
+            float closestDistance = Float.MAX_VALUE;
 
-        for(GSObject o : objectList){
-            if(o instanceof GSICollidable){
-                GSICollidable collidable = (GSICollidable) o;
-                ArrayList<GSOInterfaceSegment> segments = ((GSICollidable) o).getCollidableInterfaceSegments();
+            for (GSObject o : objectList) {
+                if (o instanceof GSICollidable) {
+                    GSICollidable collidable = (GSICollidable) o;
+                    ArrayList<GSOInterfaceSegment> segments = ((GSICollidable) o).getCollidableInterfaceSegments();
 
-                for(GSOInterfaceSegment seg : segments){
-                    GSInterfaceCollisionResult collisionResult = seg.getCollisionResultIfExists(initialRay);
+                    for (GSOInterfaceSegment seg : segments) {
+                        GSInterfaceCollisionResult collisionResult = seg.getCollisionResultIfExists(initialRay);
 
-                    if(collisionResult != null) {
-                        if (closestResult == null){
-                            closestResult = collisionResult;
-                            closestDistance = collisionResult.incidenceRaySegment.length;
-                        }
-                        else{
-                            if(collisionResult.incidenceRaySegment.length < closestDistance){
+                        if (collisionResult != null) {
+                            if (closestResult == null) {
                                 closestResult = collisionResult;
                                 closestDistance = collisionResult.incidenceRaySegment.length;
+                            } else {
+                                if (collisionResult.incidenceRaySegment.length < closestDistance) {
+                                    closestResult = collisionResult;
+                                    closestDistance = collisionResult.incidenceRaySegment.length;
+                                }
                             }
                         }
                     }
                 }
             }
-        }
 
 
-        if(closestResult != null){
-            traj.addUninterruptedSegment(closestResult.incidenceRaySegment);
-        }else{
-            Vector2 rayEndPoint = initialRay.getRayStart().cpy().add(initialRay.direction.cpy().scl(initialRay.fadeOutDistance));
-            traj.addUninterruptedSegment(initialRay.rayStart, rayEndPoint, initialRay.getStartIntensity(), initialRay.fadingCoefficient);
+            if (closestResult != null) {
+                closestResult.incidenceRaySegment.getCollidedInterface().markCollision = true;
+                traj.addUninterruptedSegment(closestResult.incidenceRaySegment);
+                traj.addCollisionResult(closestResult);
+
+                initialRay = closestResult.getReflectedRayFront();
+
+            } else {
+
+                if(initialRay != null) {
+                    Vector2 rayEndPoint = initialRay.getRayStart().cpy()
+                            .add(initialRay.direction.cpy().scl(initialRay.fadeOutDistance));
+                    traj.addUninterruptedSegment(initialRay.rayStart, rayEndPoint,
+                            initialRay.getStartIntensity(), initialRay.fadingCoefficient, null);
+                }
+                break;
+            }
         }
 
         return traj;
