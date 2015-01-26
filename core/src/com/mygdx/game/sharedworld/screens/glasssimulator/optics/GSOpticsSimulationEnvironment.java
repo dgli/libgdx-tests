@@ -2,9 +2,11 @@ package com.mygdx.game.sharedworld.screens.glasssimulator.optics;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Vector;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.sharedworld.screens.glasssimulator.config.Constants;
+import com.mygdx.game.sharedworld.screens.glasssimulator.optics.objects.GSOInterfaceSegment;
 
 import java.util.ArrayList;
 
@@ -66,16 +68,44 @@ public class GSOpticsSimulationEnvironment {
 
     public GSRayTrajectory projectRay(GSRaySource rSrc){
 
-        // for now, just cast straight
         GSRayTrajectory traj = new GSRayTrajectory(rSrc.baseColor);
 
-        Vector2 endPoint = new Vector2(
-                (float) Math.cos(rSrc.direction) * 500,
-                (float) Math.sin(rSrc.direction) * 500);
+        RayFront initialRay = new RayFront(rSrc.position.cpy(), rSrc.direction.cpy(), 1, 0.004f);
 
-        //System.out.println("SOURCE: " + rSrc.position + "    COPY: " + rSrc.position.cpy());
+        GSInterfaceCollisionResult closestResult = null;
+        float closestDistance = Float.MAX_VALUE;
 
-        traj.addUninterruptedSegment(rSrc.position, rSrc.position.cpy().add(endPoint), 1, 0);
+        for(GSObject o : objectList){
+            if(o instanceof GSICollidable){
+                GSICollidable collidable = (GSICollidable) o;
+                ArrayList<GSOInterfaceSegment> segments = ((GSICollidable) o).getCollidableInterfaceSegments();
+
+                for(GSOInterfaceSegment seg : segments){
+                    GSInterfaceCollisionResult collisionResult = seg.getCollisionResultIfExists(initialRay);
+
+                    if(collisionResult != null) {
+                        if (closestResult == null){
+                            closestResult = collisionResult;
+                            closestDistance = collisionResult.incidenceRaySegment.length;
+                        }
+                        else{
+                            if(collisionResult.incidenceRaySegment.length < closestDistance){
+                                closestResult = collisionResult;
+                                closestDistance = collisionResult.incidenceRaySegment.length;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+
+        if(closestResult != null){
+            traj.addUninterruptedSegment(closestResult.incidenceRaySegment);
+        }else{
+            Vector2 rayEndPoint = initialRay.getRayStart().cpy().add(initialRay.direction.cpy().scl(initialRay.fadeOutDistance));
+            traj.addUninterruptedSegment(initialRay.rayStart, rayEndPoint, initialRay.getStartIntensity(), initialRay.fadingCoefficient);
+        }
 
         return traj;
     }

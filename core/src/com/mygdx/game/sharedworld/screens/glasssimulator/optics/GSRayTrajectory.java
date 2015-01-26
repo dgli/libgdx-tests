@@ -11,22 +11,6 @@ import java.util.ArrayList;
  */
 public class GSRayTrajectory {
 
-    /**
-     * Represents an uninterrupted ray segment.
-     */
-    private class RaySegment{
-        Vector2 segmentStart, segmentEnd;
-        float length;
-        float startIntensity, endIntensity;
-
-        public RaySegment(Vector2 segStart, Vector2 segEnd, float startInten, float endInten) {
-            segmentStart = segStart;
-            segmentEnd = segEnd;
-            startIntensity = startInten;
-            endIntensity = endInten;
-            length = segEnd.dst(segStart);
-        }
-    }
 
     /**
      * List of uninterrupted segments
@@ -45,9 +29,14 @@ public class GSRayTrajectory {
             Color endColor = new Color(baseColor.r, baseColor.g, baseColor.b, r.endIntensity);
             sr.line(r.segmentStart.x, r.segmentStart.y, r.segmentEnd.x, r.segmentEnd.y, startColor, endColor);
         }
+
     }
 
     public void addUninterruptedSegment(Vector2 start, Vector2 end, float startInten, float endInten){
         segmentList.add(new RaySegment(start, end, startInten, endInten));
+    }
+
+    public void addUninterruptedSegment(RaySegment seg){
+        segmentList.add(seg);
     }
 }

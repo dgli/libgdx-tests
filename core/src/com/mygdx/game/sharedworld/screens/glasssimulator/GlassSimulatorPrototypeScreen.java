@@ -10,6 +10,8 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.math.collision.Segment;
 import com.mygdx.game.MyGdxGame;
 
 import com.mygdx.game.sharedworld.screens.MainMenuScreen;
@@ -34,6 +36,9 @@ public class GlassSimulatorPrototypeScreen implements Screen, InputProcessor {
 
     float testCounter = 0;
     float testSpread = 0;
+    int frameCounter = 0;
+
+    Vector2 mouseVec = new Vector2(0, 0);
 
     GSOLaserPointer testLaserPointer;
 
@@ -50,7 +55,7 @@ public class GlassSimulatorPrototypeScreen implements Screen, InputProcessor {
         music = Gdx.audio.newMusic(Gdx.files.internal("music/superslambros.mp3"));
         music.setVolume(0.5f);
         music.setLooping(true);
-        music.play();
+        //music.play();
 
         // input events
         game.requestInputFocus(this);
@@ -58,10 +63,12 @@ public class GlassSimulatorPrototypeScreen implements Screen, InputProcessor {
         // simulation environment
         simulationEnvironment = new GSOpticsSimulationEnvironment();
 
-        testLaserPointer = new GSOLaserPointer(new Vector2(300, 300), 0);
+        testLaserPointer = new GSOLaserPointer(new Vector2(300, 300), new Vector2(1, 0));
 
         simulationEnvironment.addObject(testLaserPointer);
-        simulationEnvironment.addObject(new GSOInterfaceSegment(new Vector2(100, 300), new Vector2(300, 100), 1, 1));
+        simulationEnvironment.addObject(new GSOInterfaceSegment(new Vector2(100, 500), new Vector2(0, 100), 1, 1));
+        simulationEnvironment.addObject(new GSOInterfaceSegment(new Vector2(100, 300), new Vector2(300, 0), 1, 1));
+        simulationEnvironment.addObject(new GSOInterfaceSegment(new Vector2(50, 200), new Vector2(200, 100), 1, 1));
 
     }
 
@@ -74,6 +81,25 @@ public class GlassSimulatorPrototypeScreen implements Screen, InputProcessor {
 
     @Override
     public void render(float deltaTime) {
+
+        frameCounter++;
+        if(frameCounter%20 != 0){
+            //return;
+        }
+
+        //angle control
+        if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) testCounter += deltaTime;
+        if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) testCounter -= deltaTime;
+
+        testLaserPointer.setDirection(new Vector2((float)Math.cos(testCounter), (float)Math.sin(testCounter)));
+
+        //spread control
+        if(Gdx.input.isKeyPressed(Input.Keys.UP)) testSpread += deltaTime;
+        if(Gdx.input.isKeyPressed(Input.Keys.DOWN)) testSpread -= deltaTime;
+
+
+
+
         // clear the screen with a dark blue color. The
         // arguments to glClearColor are the red, green
         // blue and alpha component in the range [0,1]
@@ -99,13 +125,25 @@ public class GlassSimulatorPrototypeScreen implements Screen, InputProcessor {
 
         ShapeRenderer sr = new ShapeRenderer();
 
-        sr.setColor(1f, 1f, 0, 0.1f);
+        sr.setColor(1f, 1f, 0, 1f);
         sr.setProjectionMatrix(camera.combined);
 
         sr.begin(ShapeRenderer.ShapeType.Filled);
 
         simulationEnvironment.updateEnvironmentRayTrajectories();
         simulationEnvironment.drawObjectShapes(sr);
+
+        // draw some ray testers
+        Vector2 start = new Vector2(300, 300);
+        Vector2 end = mouseVec;
+        Vector2 mid = start.cpy().add(end).scl(0.5f);
+
+        float direction = end.cpy().sub(start).angleRad() - (float)Math.PI/2f;
+
+        //sr.line(start, end);
+        //sr.circle(mid.x, mid.y, 2);
+        //sr.line(mid.x, mid.y, mid.x + 50 * (float)Math.cos(direction), mid.y + 50 * (float)Math.sin(direction));
+
 
         sr.end();
 
@@ -118,15 +156,6 @@ public class GlassSimulatorPrototypeScreen implements Screen, InputProcessor {
 
         batch.end();
 
-        //angle control
-        if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) testCounter += deltaTime;
-        if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) testCounter -= deltaTime;
-
-        testLaserPointer.setDirection(testCounter);
-
-        //spread control
-        if(Gdx.input.isKeyPressed(Input.Keys.UP)) testSpread += deltaTime;
-        if(Gdx.input.isKeyPressed(Input.Keys.DOWN)) testSpread -= deltaTime;
 
 
     }
@@ -194,6 +223,11 @@ public class GlassSimulatorPrototypeScreen implements Screen, InputProcessor {
 
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
+        Vector3 unprojected = camera.unproject(new Vector3(screenX, screenY, 0));
+
+        mouseVec.x = unprojected.x;
+        mouseVec.y = unprojected.y;
+
         return false;
     }
 

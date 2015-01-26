@@ -17,7 +17,7 @@ import java.util.ArrayList;
 public class GSOLaserPointer extends GSObject implements GSIRayEmitter {
 
     private Vector2 position;
-    private float direction;
+    private Vector2 direction;
     private boolean parametersChanged;
 
     /**
@@ -28,7 +28,7 @@ public class GSOLaserPointer extends GSObject implements GSIRayEmitter {
     private GSRaySource laserEmitter;
 
 
-    public GSOLaserPointer(Vector2 position, float direction){
+    public GSOLaserPointer(Vector2 position, Vector2 direction){
         this.position = position;
         this.direction = direction;
         parametersChanged = true;
@@ -60,17 +60,19 @@ public class GSOLaserPointer extends GSObject implements GSIRayEmitter {
         parametersChanged = false;
 
         laserEmitter = new GSRaySource(position, direction, this, Color.RED);
-        unitDirectionEndPointCache = position.cpy().add(
-                new Vector2((float) Math.cos(direction) * Constants.LaserPointer.BARREL_LENGTH,
-                (float) Math.sin(direction) * Constants.LaserPointer.BARREL_LENGTH));
+//        unitDirectionEndPointCache = position.cpy().add(
+//                new Vector2((float) Math.cos(direction) * Constants.LaserPointer.BARREL_LENGTH,
+//                        (float) Math.sin(direction) * Constants.LaserPointer.BARREL_LENGTH));
+
+        unitDirectionEndPointCache = position.cpy().add(direction.cpy().scl(Constants.LaserPointer.BARREL_LENGTH));
     }
 
 
-    public float getDirection() {
+    public Vector2 getDirection() {
         return direction;
     }
 
-    public void setDirection(float direction) {
+    public void setDirection(Vector2 direction) {
         parametersChanged = true;
         this.direction = direction;
     }
