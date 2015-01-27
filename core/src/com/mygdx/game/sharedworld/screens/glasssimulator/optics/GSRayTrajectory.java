@@ -34,8 +34,8 @@ public class GSRayTrajectory {
         }
 
         for(GSInterfaceCollisionResult r : rayCollisions){
-            sr.setColor(Color.WHITE);
-            sr.line(r.collisionPoint, r.collisionPoint.cpy().add(r.getCollidedInterface().getNormal().cpy().scl(10)));
+            sr.setColor(Color.GRAY);
+            sr.line(r.collisionPoint, r.collisionPoint.cpy().add(r.getCollidedInterface().getNormal().cpy().scl(5)));
         }
     }
 

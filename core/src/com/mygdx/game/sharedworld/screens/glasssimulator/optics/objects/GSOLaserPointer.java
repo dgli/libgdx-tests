@@ -39,7 +39,16 @@ public class GSOLaserPointer extends GSObject implements GSIRayEmitter {
     @Override
     public ArrayList<GSRaySource> getRaySources() {
         ArrayList<GSRaySource> srcList = new ArrayList<GSRaySource>();
-        srcList.add(laserEmitter);
+        //srcList.add(laserEmitter);
+
+        for(float n = 0; n < 0.125 * 3.1416; n+= 0.002){
+            srcList.add(new GSRaySource(position,
+                    new Vector2(
+                            (float)Math.cos(direction.angleRad() + n),
+                            (float)Math.sin(direction.angleRad() + n)),
+                    this, new Color(1f, 0, 0, 0.01f)));
+        }
+
         return srcList;
     }
 
