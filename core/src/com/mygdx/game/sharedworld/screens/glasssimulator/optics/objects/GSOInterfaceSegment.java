@@ -159,15 +159,15 @@ public class GSOInterfaceSegment extends GSObject implements GSICollidable{
         // if the cross radius vector is on the same side of the normal as the incident ray
         // then we know we are on the wrong side.
         //
-        int incSide = Intersector.pointLineSide(intersection, intersection.cpy().add(normal.cpy().scl(10000)),
+        int incSide = side(intersection, intersection.cpy().add(normal.cpy().scl(10000)),
                 source.getRayStart());
 
-        int reflSide = Intersector.pointLineSide(intersection, intersection.cpy().add(normal.cpy().scl(10000)),
+        int reflSide = side(intersection, intersection.cpy().add(normal.cpy().scl(10000)),
                 source.getRayStart().cpy().add(crossVector));
 
-        System.out.println("INCSIDE:" + incSide + "   REFSIDE:" + reflSide);
+        //System.out.println("INCSIDE:" + incSide + "   REFSIDE:" + reflSide);
 
-        if(incSide == reflSide){
+        if(incSide > 0 && reflSide > 0){
             crossVector.scl(-1);
         }
 
@@ -179,18 +179,18 @@ public class GSOInterfaceSegment extends GSObject implements GSICollidable{
                         incidenceSegment.getEndIntensity(), source.getFadingCoefficient(),
                         this);
 
-        RaySegment reflectionSeg =
-                new RaySegment(intersection.cpy(), source.getRayStart().cpy().add(crossVector),
-                        incidenceSegment.getEndIntensity(), source.getFadingCoefficient(),
-                        this);
+//        RaySegment reflectionSeg =
+//                new RaySegment(intersection.cpy(), source.getRayStart().cpy().add(crossVector),
+//                        incidenceSegment.getEndIntensity(), source.getFadingCoefficient(),
+//                        this);
+//
+//        RaySegment normalSeg =
+//                new RaySegment(intersection, intersection.cpy().add(normal.cpy().scl(500)),
+//                        incidenceSegment.getEndIntensity(), source.getFadingCoefficient(),
+//                        this);
 
-        RaySegment normalSeg =
-                new RaySegment(intersection, intersection.cpy().add(normal.cpy().scl(500)),
-                        incidenceSegment.getEndIntensity(), source.getFadingCoefficient(),
-                        this);
-
-        //result.setReflectedRayFront(reflectionRayFront);
-        result.setIncidenceRaySegment(reflectionSeg);
+        result.setReflectedRayFront(reflectionRayFront);
+        result.setIncidenceRaySegment(incidenceSegment);
         result.setCollisionPoint(intersection.cpy());
 
 
@@ -199,6 +199,15 @@ public class GSOInterfaceSegment extends GSObject implements GSICollidable{
 
         previousIntersectionSuccess = true;
         return result;
+    }
+
+    int side(Vector2 p1, Vector2 p2, Vector2 p)
+    {
+        Vector2 diff = p2.cpy().sub(p1);
+        Vector2 perp = new Vector2(-diff.y, diff.x);
+        float d = p.cpy().sub(p1).dot(perp);
+
+        return (d > 0 ? 1 : -1);
     }
 
 

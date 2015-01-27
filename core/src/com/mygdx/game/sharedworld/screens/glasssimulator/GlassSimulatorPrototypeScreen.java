@@ -56,7 +56,7 @@ public class GlassSimulatorPrototypeScreen implements Screen, InputProcessor {
         music = Gdx.audio.newMusic(Gdx.files.internal("music/superslambros.mp3"));
         music.setVolume(0.5f);
         music.setLooping(true);
-        music.play();
+        //music.play();
 
         // input events
         game.requestInputFocus(this);
@@ -67,11 +67,11 @@ public class GlassSimulatorPrototypeScreen implements Screen, InputProcessor {
         testLaserPointer = new GSOLaserPointer(new Vector2(300, 300), new Vector2(1, 0));
 
         simulationEnvironment.addObject(testLaserPointer);
-        simulationEnvironment.addObject(new GSOInterfaceSegment(new Vector2(100, 500), new Vector2(0, 100), 1, 1));
-        simulationEnvironment.addObject(new GSOInterfaceSegment(new Vector2(100, 300), new Vector2(300, 0), 1, 1));
+        simulationEnvironment.addObject(new GSOInterfaceSegment(new Vector2(300, 450), new Vector2(50, 100), 1, 1));
+        simulationEnvironment.addObject(new GSOInterfaceSegment(new Vector2(100, 300), new Vector2(300, 50), 1, 1));
         simulationEnvironment.addObject(new GSOInterfaceSegment(new Vector2(50, 200), new Vector2(200, 100), 1, 1));
-        simulationEnvironment.addObject(new GSOInterfaceSegment(new Vector2(600, 300), new Vector2(400, 0), 1, 1));
-        simulationEnvironment.addObject(new GSOInterfaceSegment(new Vector2(600, 100), new Vector2(400, 500), 1, 1));
+        simulationEnvironment.addObject(new GSOInterfaceSegment(new Vector2(600, 300), new Vector2(400, 50), 1, 1));
+        simulationEnvironment.addObject(new GSOInterfaceSegment(new Vector2(600, 100), new Vector2(400, 450), 1, 1));
 
     }
 
