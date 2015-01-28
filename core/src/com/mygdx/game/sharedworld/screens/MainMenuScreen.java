@@ -93,6 +93,10 @@ public class MainMenuScreen implements Screen, InputProcessor {
 
         game.requestInputFocus(inputMux);
 
+        // hardware to automatically go to glass simulator
+        game.setScreen(new GlassSimulatorPrototypeScreen(game));
+        dispose();
+
     }
 
     @Override

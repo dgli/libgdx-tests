@@ -5,14 +5,12 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.math.collision.Segment;
 import com.mygdx.game.MyGdxGame;
 
 import com.mygdx.game.sharedworld.screens.MainMenuScreen;
@@ -192,6 +190,13 @@ public class GlassSimulatorPrototypeScreen implements Screen, InputProcessor {
 
     @Override
     public boolean keyDown(int keycode) {
+
+        // hardwire exit
+        if(keycode == Input.Keys.BACK || keycode == Input.Keys.ESCAPE){
+            Gdx.app.exit();
+            return true;
+        }
+
         if(keycode == Input.Keys.BACK || keycode == Input.Keys.ESCAPE){
             music.stop();
             this.dispose();

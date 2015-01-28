@@ -1,11 +1,7 @@
 package com.mygdx.game.sharedworld.screens.glasssimulator.optics;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Intersector;
-import com.badlogic.gdx.math.Vector;
 import com.badlogic.gdx.math.Vector2;
-import com.mygdx.game.sharedworld.screens.glasssimulator.config.Constants;
 import com.mygdx.game.sharedworld.screens.glasssimulator.optics.objects.GSOInterfaceSegment;
 
 import java.util.ArrayList;
