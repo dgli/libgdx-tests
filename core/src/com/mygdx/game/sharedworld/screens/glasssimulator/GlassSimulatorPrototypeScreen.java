@@ -17,6 +17,7 @@ import com.mygdx.game.sharedworld.screens.MainMenuScreen;
 import com.mygdx.game.sharedworld.screens.glasssimulator.optics.objects.GSOInterfaceSegment;
 import com.mygdx.game.sharedworld.screens.glasssimulator.optics.objects.GSOLaserPointer;
 import com.mygdx.game.sharedworld.screens.glasssimulator.optics.GSOpticsSimulationEnvironment;
+import com.mygdx.game.sharedworld.screens.glasssimulator.optics.objects.GSOPointSource;
 
 /**
  * Created by dgli on 01/01/15.
@@ -39,7 +40,7 @@ public class GlassSimulatorPrototypeScreen implements Screen, InputProcessor {
 
     Vector2 mouseVec = new Vector2(0, 0);
 
-    GSOLaserPointer testLaserPointer;
+    GSOPointSource testPointSource;
 
 
     public GlassSimulatorPrototypeScreen(final MyGdxGame backInst) {
@@ -62,9 +63,9 @@ public class GlassSimulatorPrototypeScreen implements Screen, InputProcessor {
         // simulation environment
         simulationEnvironment = new GSOpticsSimulationEnvironment();
 
-        testLaserPointer = new GSOLaserPointer(new Vector2(300, 300), new Vector2(1, 0));
+        testPointSource = new GSOPointSource(new Vector2(300, 300));
 
-        simulationEnvironment.addObject(testLaserPointer);
+        simulationEnvironment.addObject(testPointSource);
         simulationEnvironment.addObject(new GSOInterfaceSegment(new Vector2(300, 350), new Vector2(50, 100), 1, 1));
         simulationEnvironment.addObject(new GSOInterfaceSegment(new Vector2(100, 320), new Vector2(300, 50), 1, 1));
         simulationEnvironment.addObject(new GSOInterfaceSegment(new Vector2(50, 200), new Vector2(200, 100), 1, 1));
@@ -92,8 +93,8 @@ public class GlassSimulatorPrototypeScreen implements Screen, InputProcessor {
         if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) testCounter += deltaTime;
         if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) testCounter -= deltaTime;
 
-        testLaserPointer.setDirection(new Vector2((float)Math.cos(testCounter), (float)Math.sin(testCounter)));
-        testLaserPointer.setPosition(mouseVec);
+        //testPointSource.setDirection(new Vector2((float)Math.cos(testCounter), (float)Math.sin(testCounter)));
+        testPointSource.setPosition(mouseVec);
 
         //spread control
         if(Gdx.input.isKeyPressed(Input.Keys.UP)) testSpread += deltaTime;
