@@ -55,7 +55,7 @@ public class GlassSimulatorPrototypeScreen implements Screen, InputProcessor {
         music = Gdx.audio.newMusic(Gdx.files.internal("music/superslambros.mp3"));
         music.setVolume(0.5f);
         music.setLooping(true);
-        //music.play();
+        music.play();
 
         // input events
         game.requestInputFocus(this);
