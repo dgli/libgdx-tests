@@ -55,7 +55,7 @@ public class GSOPointSource  extends GSObject implements GSIRayEmitter {
                     new Vector2(
                             (float)Math.cos(n),
                             (float)Math.sin(n)),
-                    this, new Color(1f, 0f, 0f, 1f)));
+                    this, new Color(1f, 1f, 0f, 1f)));
         }
 
     }
