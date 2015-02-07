@@ -64,6 +64,8 @@ public class GlassSimulatorPrototypeScreen implements Screen, InputProcessor {
         simulationEnvironment = new GSOpticsSimulationEnvironment();
 
         testPointSource = new GSOPointSource(new Vector2(300, 300));
+        //testPointSource.setEmitterResolution(100);
+
 
         simulationEnvironment.addObject(testPointSource);
         simulationEnvironment.addObject(new GSOInterfaceSegment(new Vector2(300, 350), new Vector2(50, 100), 1, 1));

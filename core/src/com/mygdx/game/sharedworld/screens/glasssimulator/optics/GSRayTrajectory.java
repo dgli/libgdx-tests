@@ -28,9 +28,15 @@ public class GSRayTrajectory {
 
     public void drawTrajectoryShape(ShapeRenderer sr){
         for(RaySegment r : segmentList){
-            Color startColor = new Color(baseColor.r, baseColor.g, baseColor.b, r.startIntensity);
-            Color endColor = new Color(baseColor.r, baseColor.g, baseColor.b, r.endIntensity);
-            sr.line(r.segmentStart.x, r.segmentStart.y, r.segmentEnd.x, r.segmentEnd.y, startColor, endColor);
+            Color startColor = new Color(baseColor.r, baseColor.g, baseColor.b, r.getIntensity());
+//            Color endColor = new Color(baseColor.r, baseColor.g, baseColor.b, r.endIntensity);
+//            sr.line(r.segmentStart.x, r.segmentStart.y, r.segmentEnd.x, r.segmentEnd.y,
+//                    Color.GREEN, Color.GREEN);
+//            sr.line(r.segmentStart.x, r.segmentStart.y, r.segmentEnd.x, r.segmentEnd.y,
+//                    startColor, startColor);
+
+            sr.setColor(startColor);
+            sr.line(r.getSegmentStart(), r.getSegmentEnd());
         }
 
         for(GSInterfaceCollisionResult r : rayCollisions){
@@ -40,9 +46,9 @@ public class GSRayTrajectory {
     }
 
     public void addUninterruptedSegment(Vector2 start, Vector2 end,
-                                        float startInten, float endInten,
+                                        float startInten,
                                         GSOInterfaceSegment collidedInterface){
-        segmentList.add(new RaySegment(start, end, startInten, endInten, collidedInterface));
+        segmentList.add(new RaySegment(start, end, startInten, collidedInterface));
     }
 
     public void addUninterruptedSegment(RaySegment seg){

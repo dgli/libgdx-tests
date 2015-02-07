@@ -17,8 +17,8 @@ public class GSOPointSource  extends GSObject implements GSIRayEmitter {
 
     private Vector2 position;
     private boolean parametersChanged;
-    private float emitterResolution = 0.002f;
     private ArrayList<GSRaySource> emitters;
+    private float emitterResolution = Constants.PointSource.EMITTER_RESOLUTION;
 
 
     public GSOPointSource(Vector2 position){
@@ -43,8 +43,6 @@ public class GSOPointSource  extends GSObject implements GSIRayEmitter {
         sr.setColor(1f, 0, 0, 1f);
         sr.circle(position.x, position.y, Constants.LaserPointer.BASE_DOT_RADIUS);
 
-        //System.out.println("LASER DIRECTION: " + direction);
-
     }
 
     public void recalc(){
@@ -57,7 +55,7 @@ public class GSOPointSource  extends GSObject implements GSIRayEmitter {
                     new Vector2(
                             (float)Math.cos(n),
                             (float)Math.sin(n)),
-                    this, new Color(1f, 0.5f, 0.5f, 0.01f)));
+                    this, new Color(1f, 0f, 0f, 1f)));
         }
 
     }

@@ -10,25 +10,15 @@ public class RayFront {
 
     Vector2 rayStart;
     Vector2 direction;
-    float startIntensity;
-    float fadeOutDistance;
-    float fadingCoefficient;
+    float intensity;
     GSOInterfaceSegment fromSegment;
 
-    public RayFront(Vector2 rayStart, Vector2 direction, float startIntensity,
-                    float fadingCoefficient, GSOInterfaceSegment from) {
+    public RayFront(Vector2 rayStart, Vector2 direction, float intensity,
+                    GSOInterfaceSegment from) {
         this.rayStart = rayStart;
         this.direction = direction;
-        this.startIntensity = startIntensity;
+        this.intensity = intensity;
         this.fromSegment = from;
-
-        if(fadingCoefficient > 0.00000001f) {
-            this.fadeOutDistance = 1 / fadingCoefficient;
-        }else{
-            this.fadeOutDistance = -1;
-        }
-
-        this.fadingCoefficient = fadingCoefficient;
     }
 
 
@@ -53,27 +43,12 @@ public class RayFront {
         this.direction = direction;
     }
 
-    public float getStartIntensity() {
-        return startIntensity;
+    public float getIntensity() {
+        return intensity;
     }
 
-    public void setStartIntensity(float startIntensity) {
-        this.startIntensity = startIntensity;
+    public void setIntensity(float intensity) {
+        this.intensity = intensity;
     }
 
-    public float getFadeOutDistance() {
-        return fadeOutDistance;
-    }
-
-    public void setFadeOutDistance(float fadeOutDistance) {
-        this.fadeOutDistance = fadeOutDistance;
-    }
-
-    public float getFadingCoefficient() {
-        return fadingCoefficient;
-    }
-
-    public void setFadingCoefficient(float fadingCoefficient) {
-        this.fadingCoefficient = fadingCoefficient;
-    }
 }

@@ -123,14 +123,8 @@ public class GSOInterfaceSegment extends GSObject implements GSICollidable{
 
         RaySegment incidenceSegment =
                 new RaySegment(source.getRayStart().cpy(), intersection,
-                        source.getStartIntensity(), source.getFadingCoefficient(),
+                        source.getIntensity(),
                         this);
-
-
-        if(source.getFadeOutDistance() > 0 &&
-                incidenceSegment.getLength() > source.getFadeOutDistance()){
-            return null;
-        }
 
 
         /////
@@ -176,7 +170,7 @@ public class GSOInterfaceSegment extends GSObject implements GSICollidable{
         RayFront reflectionRayFront =
                 new RayFront(intersection.cpy(),
                         source.getRayStart().cpy().add(crossVector).sub(intersection).nor(),
-                        incidenceSegment.getEndIntensity(), source.getFadingCoefficient(),
+                        incidenceSegment.getIntensity(),
                         this);
 
 //        RaySegment reflectionSeg =

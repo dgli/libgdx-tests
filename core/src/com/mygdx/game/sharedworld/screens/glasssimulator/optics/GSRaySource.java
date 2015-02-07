@@ -12,7 +12,6 @@ public class GSRaySource {
     Vector2 direction;
     GSIRayEmitter sourceContainingObject;
     Color baseColor;
-    public float ray_max_life = 1000;
 
     GSRayTrajectory cacheTrajectory;
 

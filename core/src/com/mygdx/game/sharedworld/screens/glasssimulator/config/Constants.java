@@ -12,6 +12,10 @@ public final class Constants {
         public static final float BASE_DOT_RADIUS = 2f;
     }
 
+    public static class PointSource{
+        public static final float EMITTER_RESOLUTION = 0.0025f;
+    }
+
     public static class InterfaceSegment {
         public static final float WALL_THICKNESS = 2f;
         public static final float END_POINT_DOT_RADIUS = 2f;

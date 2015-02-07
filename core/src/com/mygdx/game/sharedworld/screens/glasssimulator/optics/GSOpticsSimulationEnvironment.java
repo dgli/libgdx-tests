@@ -1,5 +1,6 @@
 package com.mygdx.game.sharedworld.screens.glasssimulator.optics;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.sharedworld.screens.glasssimulator.optics.objects.GSOInterfaceSegment;
@@ -25,6 +26,9 @@ public class GSOpticsSimulationEnvironment {
 
         sr.end();
         sr.begin(ShapeRenderer.ShapeType.Line);
+
+        //Gdx.gl.glLineWidth(0.5f);
+
         for(GSRayTrajectory rt : rayList){
             rt.drawTrajectoryShape(sr);
         }
@@ -66,10 +70,10 @@ public class GSOpticsSimulationEnvironment {
 
         GSRayTrajectory traj = new GSRayTrajectory(rSrc.baseColor);
 
-        RayFront initialRay = new RayFront(rSrc.position.cpy(), rSrc.direction.cpy(), 1, 0.002f, null);
+        RayFront initialRay = new RayFront(rSrc.position.cpy(), rSrc.direction.cpy(), 0.25f, null);
 
         int i = 0;
-        while(i++ < 100){
+        while(i++ < 10){
             GSInterfaceCollisionResult closestResult = null;
             float closestDistance = Float.MAX_VALUE;
 
@@ -84,11 +88,11 @@ public class GSOpticsSimulationEnvironment {
                         if (collisionResult != null) {
                             if (closestResult == null) {
                                 closestResult = collisionResult;
-                                closestDistance = collisionResult.incidenceRaySegment.length;
+                                closestDistance = collisionResult.getIncidenceRaySegment().getLength();
                             } else {
-                                if (collisionResult.incidenceRaySegment.length < closestDistance) {
+                                if (collisionResult.getIncidenceRaySegment().getLength() < closestDistance) {
                                     closestResult = collisionResult;
-                                    closestDistance = collisionResult.incidenceRaySegment.length;
+                                    closestDistance = collisionResult.getIncidenceRaySegment().getLength();
                                 }
                             }
                         }
@@ -105,13 +109,6 @@ public class GSOpticsSimulationEnvironment {
                 initialRay = closestResult.getReflectedRayFront();
 
             } else {
-
-                if(initialRay != null) {
-                    Vector2 rayEndPoint = initialRay.getRayStart().cpy()
-                            .add(initialRay.direction.cpy().scl(initialRay.fadeOutDistance));
-                    traj.addUninterruptedSegment(initialRay.rayStart, rayEndPoint,
-                            initialRay.getStartIntensity(), initialRay.fadingCoefficient, null);
-                }
                 break;
             }
         }

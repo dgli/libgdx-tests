@@ -7,27 +7,19 @@ import com.mygdx.game.sharedworld.screens.glasssimulator.optics.objects.GSOInter
  * Represents an uninterrupted ray segment.
  */
 public class RaySegment{
-    Vector2 segmentStart, segmentEnd;
-    float length;
-    float startIntensity, endIntensity;
+    private Vector2 segmentStart, segmentEnd;
+    private float length;
+    private float intensity;
 
     GSOInterfaceSegment collidedInterface;
 
-    public RaySegment(Vector2 segStart, Vector2 segEnd, float startInten, float fadingCoefficient,
+    public RaySegment(Vector2 segStart, Vector2 segEnd, float startInten,
                       GSOInterfaceSegment collidedInterface) {
         segmentStart = segStart;
         segmentEnd = segEnd;
-        startIntensity = startInten;
+        intensity = startInten;
         this.collidedInterface = collidedInterface;
         length = segEnd.cpy().sub(segStart).len();
-
-        // calculate the intensity of the ray by the time it went it's length.
-        if(fadingCoefficient <= 0){
-            endIntensity = startInten;
-        }
-        else{
-            endIntensity = startInten - fadingCoefficient * length;
-        }
     }
 
     public Vector2 getSegmentStart() {
@@ -42,12 +34,8 @@ public class RaySegment{
         return length;
     }
 
-    public float getStartIntensity() {
-        return startIntensity;
-    }
-
-    public float getEndIntensity() {
-        return endIntensity;
+    public float getIntensity() {
+        return intensity;
     }
 
     public GSOInterfaceSegment getCollidedInterface() {
